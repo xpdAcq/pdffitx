@@ -1,0 +1,58 @@
+name: test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup-conda
+        uses: s-weigand/setup-conda@v1.0.3
+        with:
+          activate-conda: true
+          update-conda: false
+
+      - name: set quiet and append channels
+        run: |
+          conda config --append channels diffpy
+          conda config --append channels conda-forge
+
+      - name: install requirements
+        run: >-
+          conda create -n test --file requirements/build.txt --file requirements/run.txt --file
+          requirements/test.txt --quiet --yes
+
+      - uses: actions/checkout@v2
+        with:
+          repository: st3107/diffpy.pdfgetx-whl
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: install diffpy.pdfgetx
+        run: |
+          source activate test
+          python -m pip install *.whl
+
+      - uses: actions/checkout@v2
+
+      - name: run the tests and check for test coverage
+        run: |
+          source activate test
+          coverage run -m pytest tests --showlocals
+
+      - name: generate test coverage report and upload to codecov
+        run: |
+          source activate test
+          coverage report -m
+          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+      - name: check code style
+        run: |
+          source activate test
+          flake8
