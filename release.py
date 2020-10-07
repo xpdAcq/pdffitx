@@ -2,11 +2,19 @@
 import shutil
 import subprocess
 import sys
+import yaml
 from pathlib import Path
 
-import yaml
-from .setup import NAME, VERSION, DESCRIPTION, AUTHOR, AUTHOR_EMAIL, LICENSE, URL
+# package info
+NAME = 'pdffitx'
+VERSION = "0.1.0"
+DESCRIPTION = "A python package to model atomic pair distribution function (PDF) based on diffpy-cmi."
+AUTHOR = "Songsheng Tao"
+AUTHOR_EMAIL = 'st3107@columbia.edu'
+URL = 'https://github.com/st3107/pdffitx'
+LICENSE = "BSD (3-clause)"
 
+# conda info
 REVER_DIR = Path("rever")
 REQUIREMENTS = Path("requirements")
 CONDA_CHANNEL_SOURCES = ["defaults", "diffpy", "conda-forge"]

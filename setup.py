@@ -2,6 +2,7 @@ from os import path
 from setuptools import setup, find_packages
 import sys
 
+from release import NAME, VERSION, DESCRIPTION, AUTHOR_EMAIL, URL
 
 # NOTE: This file must remain Python 2 compatible for the foreseeable future,
 # to ensure that we error out properly for people with outdated setuptools
@@ -25,15 +26,6 @@ here = path.abspath(path.dirname(__file__))
 
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
-
-# parameters for setup
-NAME = 'pdffitx'
-VERSION = "0.1.0"
-DESCRIPTION = "A python package to model atomic pair distribution function (PDF) based on diffpy-cmi."
-AUTHOR = "Songsheng Tao"
-AUTHOR_EMAIL = 'st3107@columbia.edu'
-URL = 'https://github.com/st3107/pdffitx'
-LICENSE = "BSD (3-clause)"
 
 setup(
     name=NAME,
