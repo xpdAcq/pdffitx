@@ -13,7 +13,7 @@ def build_docs():
     make -C docs html
 
 
-$PROJECT = 'pdfstream'
+$PROJECT = 'pdffitx'
 $ACTIVITIES = [
     'version_bump',
     'changelog',
@@ -27,19 +27,19 @@ $ACTIVITIES = [
 ]
 
 $VERSION_BUMP_PATTERNS = [
-    ('pdfstream/__init__.py', '__version__\s*=.*', "__version__ = '$VERSION'"),
-    ('setup.py', 'version\s*=.*,', "version='$VERSION',")
+    ('pdffitx/__init__.py', '__version__*=.*', "__version__ = '$VERSION'"),
+    ('setup.py', 'VERSION*=.*', "VERSION='$VERSION'")
 ]
 
 $CHANGELOG_FILENAME = 'CHANGELOG.rst'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
-$TAG_REMOTE = 'git@github.com:st3107/pdfstream.git'
+$TAG_REMOTE = 'git@github.com:st3107/pdffitx.git'
 
 $GITHUB_ORG = 'st3107'
-$GITHUB_REPO = 'pdfstream'
+$GITHUB_REPO = 'pdffitx'
 
 $SPHINX_HOST_DIR = 'docs/build'
-$GHPAGES_REPO = 'git@github.com:st3107/pdfstream.git'
+$GHPAGES_REPO = 'git@github.com:st3107/pdffitx.git'
 $GHPAGES_BRANCH = 'gh-pages'
 $GHPAGES_COPY = (
     ('$SPHINX_HOST_DIR/html', '$GHPAGES_REPO_DIR'),

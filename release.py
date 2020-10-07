@@ -4,15 +4,15 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pkg_resources
 import yaml
+from .setup import NAME, VERSION, DESCRIPTION, AUTHOR, AUTHOR_EMAIL, LICENSE, URL
 
-PACKAGE = "pdfstream"
 REVER_DIR = Path("rever")
 REQUIREMENTS = Path("requirements")
-LICENSE = Path("LICENSE")
-CONDA_CHANNEL_SOURCES = ["defaults", "nsls2forge", "conda-forge"]
+CONDA_CHANNEL_SOURCES = ["defaults", "diffpy", "conda-forge"]
 CONDA_CHANNEL_TARGETS = ["st3107"]
+LICENSE_FILE = "LICENSE"
+GIT_ACCOUNT = "st3107"
 
 
 def conda_recipe() -> None:
@@ -30,7 +30,7 @@ def conda_recipe() -> None:
     with meta_yaml.open("w") as f:
         yaml.safe_dump(conda_meta(), f, sort_keys=False)
     # copy license
-    shutil.copy(LICENSE, recipe_dir / LICENSE.name)
+    shutil.copy(LICENSE_FILE, recipe_dir / LICENSE_FILE.name)
     return
 
 
@@ -44,9 +44,9 @@ def conda_build_config() -> dict:
 
 def conda_meta() -> dict:
     """Make the dictionary of conda meta information."""
-    package = pkg_resources.require(PACKAGE)[0]
-    name = package.project_name
-    version = package.version
+    name = NAME
+    version = VERSION
+    git_account = GIT_ACCOUNT
     build = read_dependencies(REQUIREMENTS / "build.txt")
     run = read_dependencies(REQUIREMENTS / "run.txt")
     tar_file_name = rf"{name}-{version}.tar.gz"
@@ -57,7 +57,7 @@ def conda_meta() -> dict:
             "version": version
         },
         "source": {
-            "url": rf"http://github.com/st3107/{name}/releases/download/{version}/{tar_file_name}",
+            "url": rf"http://github.com/{git_account}/{name}/releases/download/{version}/{tar_file_name}",
             "sha256": sha256
         },
         "build": {
@@ -73,12 +73,11 @@ def conda_meta() -> dict:
             "imports": [name]
         },
         "about": {
-            "home": rf"https://st3107.github.io/{name}/",
-            "license": r"BSD-3-Clause",
-            "license_file": str(LICENSE),
-            "summary": r"A python package to model atomic pair distribution function (PDF) based on diffpy-cmi.",
-            "dev_url": rf"https://github.com/st3107/{name}/tree/master",
-            "doc_url": rf"https://st3107.github.io/{name}/"
+            "home": URL,
+            "license": LICENSE,
+            "license_file": LICENSE_FILE,
+            "summary": DESCRIPTION,
+            "dev_url": URL,
         }
     }
 

@@ -26,20 +26,23 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-with open(path.join(here, 'requirements.txt')) as requirements_file:
-    # Parse requirements.txt, ignoring any commented-out lines.
-    requirements = [line for line in requirements_file.read().splitlines()
-                    if not line.startswith('#')]
-
+# parameters for setup
+NAME = 'pdffitx'
+VERSION = "0.1.0"
+DESCRIPTION = "A python package to model atomic pair distribution function (PDF) based on diffpy-cmi."
+AUTHOR = "Songsheng Tao"
+AUTHOR_EMAIL = 'st3107@columbia.edu'
+URL = 'https://github.com/st3107/pdffitx'
+LICENSE = "BSD (3-clause)"
 
 setup(
-    name='pdffitx',
-    version="0.1.0",
-    description="A python package to model atomic pair distribution function (PDF) based on diffpy-cmi.",
+    name=NAME,
+    version=VERSION,
+    description=DESCRIPTION,
     long_description=readme,
-    author="Songsheng Tao",
-    author_email='st3107@columbia.edu',
-    url='https://github.com/st3107/pdffitx',
+    author=AUTHOR,
+    author_email=AUTHOR_EMAIL,
+    url=URL,
     python_requires='>={}'.format('.'.join(str(n) for n in min_version)),
     packages=find_packages(exclude=['docs', 'tests']),
     entry_points={
@@ -55,8 +58,8 @@ setup(
             # 'path/to/data_file',
         ]
     },
-    install_requires=requirements,
-    license="BSD (3-clause)",
+    install_requires=[],
+    license=LICENSE,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Natural Language :: English',
