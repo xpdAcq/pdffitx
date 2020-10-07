@@ -1,0 +1,5 @@
+flake8
+codecov
+coverage
+pytest
+mongomock

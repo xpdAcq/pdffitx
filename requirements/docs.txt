@@ -1,0 +1,9 @@
+ipython
+sphinx
+numpydoc
+sphinx-copybutton
+sphinx_rtd_theme
+sphinx-gallery
+conda-build
+anaconda-client
+conda-verify

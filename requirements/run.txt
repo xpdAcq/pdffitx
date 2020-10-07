@@ -1,0 +1,7 @@
+python>=3.7
+diffpy-cmi
+pandas
+fire
+ase
+gemmi
+xarray

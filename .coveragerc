@@ -1,0 +1,10 @@
+[run]
+source =
+    pdfstream
+[report]
+omit =
+    */python?.?/*
+    */site-packages/nose/*
+
+exclude_lines =
+    if __name__ == '__main__':
