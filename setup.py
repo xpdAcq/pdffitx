@@ -2,7 +2,7 @@ from os import path
 from setuptools import setup, find_packages
 import sys
 
-from release import NAME, VERSION, DESCRIPTION, AUTHOR_EMAIL, URL
+from release import NAME, VERSION, DESCRIPTION, AUTHOR, AUTHOR_EMAIL, LICENSE, URL
 
 # NOTE: This file must remain Python 2 compatible for the foreseeable future,
 # to ensure that we error out properly for people with outdated setuptools
