@@ -1,23 +1,12 @@
 """The input / output functions related to file system."""
-from typing import Dict, Any
 
-import yaml
 from diffpy.structure import loadStructure
-from diffpy.utils.parsers import loadData
 from pyobjcryst import loadCrystal
 
 from pdffitx.modeling import MyParser
 
 load_crystal = loadCrystal
 load_structure = loadStructure
-
-
-def _lower_key(dct: Dict[str, Any]) -> Dict[str, Any]:
-    """Return dictionary with all keys in lower case."""
-    return {key.lower(): value for key, value in dct.items()}
-
-
-load_data = loadData
 
 
 def load_parser(filename: str, meta: dict) -> MyParser:
