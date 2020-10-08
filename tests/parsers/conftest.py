@@ -1,0 +1,21 @@
+import pytest
+
+import pdfstream.io as io
+import pdfstream.modeling as md
+from pdfstream.parsers.fitrecipe import recipe_to_dict2
+
+
+@pytest.fixture(scope="module")
+def recipe(db):
+    """A recipe of crystal in pyobjcryst."""
+    parser = io.load_parser(db["Ni_gr_file"], meta={"qdamp": 0.04, "qbroad": 0.02})
+    structure = io.load_crystal(db["Ni_stru_file"])
+    recipe = md.create("test", parser, (2.2, 7.2, 0.1), "G", {}, {"G": structure})
+    md.initialize(recipe)
+    md.optimize(recipe, ["G_scale"], verbose=0, ftol=1e-3)
+    return recipe
+
+
+@pytest.fixture(scope="module")
+def doc2(recipe):
+    return recipe_to_dict2(recipe)
