@@ -1,6 +1,6 @@
 from diffpy.srreal.bvscalculator import BVSCalculator
 
-from pdfstream.parsers.calculator import bvs_to_xarray
+from pdffitx.parsers.calculator import bvs_to_xarray
 
 
 def test_bvs_to_xarray(db):

@@ -2,25 +2,25 @@
 # Distance Sample to Detector: 0.24877604283795038 m
 # PONI: 2.053e-01, 2.010e-01 m
 # Rotations: -0.000237 -0.000376 -0.000000 rad
-# 
+#
 # == Fit2d calibration ==
 # Distance Sample-beamCenter: 248.776 mm
 # Center: x=1005.196, y=1026.245 pix
 # Tilt: 0.025 deg  TiltPlanRot: -57.748 deg
-# 
+#
 # Detector Perkin detector	 PixelSize= 2.000e-04, 2.000e-04 m
-#    Detector has a mask: False 
-#    Detector has a dark current: False 
-#    detector has a flat field: False 
-# 
+#    Detector has a mask: False
+#    Detector has a dark current: False
+#    detector has a flat field: False
+#
 # Wavelength: 1.671e-11 m
 # Mask applied: provided
 # Dark current applied: False
 # Flat field applied: False
 # Polarization factor: 0.99
 # Normalization factor: 1.0
-# --> /Users/sst/project/software/pdfstream/pdfstream/test_data/Ni.chi
-#        q_A^-1             I 
+# --> /Users/sst/project/software/pdffitx/pdffitx/test_data/Ni.chi
+#        q_A^-1             I
   9.560906e-02    8.886408e+00
   1.168712e-01    1.338333e+01
   1.381334e-01    2.370198e+01

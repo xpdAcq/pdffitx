@@ -1,9 +1,9 @@
+import pytest
 from tempfile import TemporaryDirectory
 
-import pdfstream.modeling.saving as S
-import pytest
-from pdfstream.modeling.main import optimize
-from pdfstream.modeling.saving import save
+import pdffitx.modeling.exporter as exporter
+from pdffitx.modeling.exporter import save
+from pdffitx.modeling.main import optimize
 
 
 @pytest.mark.parametrize(
@@ -24,4 +24,4 @@ def test_save(recipe, kwargs):
 
 def test_write_crystal_error(db):
     with pytest.raises(ValueError):
-        S.write_crystal(db['Ni_stru'], 'error.mol', fmt='mol')
+        exporter.write_crystal(db['Ni_stru'], 'error.mol', fmt='mol')

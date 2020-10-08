@@ -1,8 +1,8 @@
 import pytest
 
-import pdfstream.io as io
-import pdfstream.modeling as md
-from pdfstream.parsers.fitrecipe import recipe_to_dict2
+import pdffitx.io as io
+import pdffitx.modeling as md
+from pdffitx.parsers.fitrecipe import recipe_to_dict2
 
 
 @pytest.fixture(scope="module")

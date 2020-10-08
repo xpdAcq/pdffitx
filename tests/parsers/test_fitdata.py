@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pdfstream.parsers.fitdata import dict_to_array, dicts_to_array
+from pdffitx.parsers.fitdata import dict_to_array, dicts_to_array
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,6 @@
 import numpy as np
 
-from pdfstream.modeling.gens import GaussianGenerator
+from pdffitx.modeling.gens import GaussianGenerator
 
 
 def test_GaussianGenerator():

@@ -1,9 +1,9 @@
 import pytest
 
-from pdfstream.modeling import F
-from pdfstream.modeling.fitfuncs import make_generator, get_sgpars, make_contribution, plot
-from pdfstream.modeling.fitobjs import GenConfig, ConConfig, MyParser, FunConfig
-from pdfstream.modeling.gens import GaussianGenerator
+from pdffitx.modeling import F
+from pdffitx.modeling.fitfuncs import make_generator, get_sgpars, make_contribution, plot
+from pdffitx.modeling.fitobjs import GenConfig, ConConfig, MyParser, FunConfig
+from pdffitx.modeling.gens import GaussianGenerator
 
 
 @pytest.mark.parametrize(

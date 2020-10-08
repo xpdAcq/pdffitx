@@ -5,7 +5,7 @@ from pkg_resources import resource_filename
 
 
 def test_cli_main():
-    main_file = Path(resource_filename('pdfstream', 'main.py'))
+    main_file = Path(resource_filename('pdffitx', 'main.py'))
     cp = subprocess.run(
         ['python', str(main_file), '--', '--help'],
         stdin=subprocess.PIPE,

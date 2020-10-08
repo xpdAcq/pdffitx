@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from pdfstream.calibration.main import calib_pipe
+from pdffitx.calibration.main import calib_pipe
 
 
 def test_calib_pipe(db):

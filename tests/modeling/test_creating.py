@@ -1,6 +1,6 @@
 import pytest
 
-import pdfstream.modeling.creating as module
+import pdffitx.modeling.creating as module
 
 
 @pytest.mark.parametrize(

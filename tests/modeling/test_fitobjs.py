@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
-import pdfstream.modeling.fitobjs as fitobjs
-from pdfstream.modeling.fitobjs import MyParser, GenConfig, ConConfig
-from pdfstream.modeling.main import multi_phase
+import pdffitx.modeling.fitobjs as fitobjs
+from pdffitx.modeling.fitobjs import MyParser, GenConfig, ConConfig
+from pdffitx.modeling.main import multi_phase
 
 
 @pytest.mark.parametrize(

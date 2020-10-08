@@ -1,12 +1,13 @@
 """The functions used in the command line interface. The input and output are all files."""
+import matplotlib.pyplot as plt
+import pdfstream.io as pio
+import pdfstream.transformation.io as tio
 import typing as tp
 from pathlib import PurePath
-
-import matplotlib.pyplot as plt
-import pdfstream.io as io
 from pkg_resources import resource_filename
 
 import pdffitx.calibration as calib
+import pdffitx.io as io
 import pdffitx.modeling as md
 
 
@@ -95,11 +96,11 @@ def instrucalib(
         cfg_file = resource_filename('pdffitx', 'data/Ni_cfg_file.cfg')
     if stru_file is None:
         stru_file = resource_filename('pdffitx', 'data/Ni_cif_file.cif')
-    ai = io.load_ai_from_poni_file(poni_file)
-    img = io.load_img(img_file)
-    pdfconfig = io.load_pdfconfig(cfg_file)
+    ai = pio.load_ai_from_poni_file(poni_file)
+    img = pio.load_img(img_file)
+    pdfconfig = tio.load_pdfconfig(cfg_file)
     stru = io.load_crystal(stru_file)
-    bg_img = io.load_img(bg_img_file) if bg_img_file is not None else None
+    bg_img = pio.load_img(bg_img_file) if bg_img_file is not None else None
     pdfgetter, recipe = calib.calib_pipe(
         ai, img, pdfconfig, stru, fit_range=fit_range, qdamp0=qdamp0, qbroad0=qbroad0,
         bg_img=bg_img, bg_scale=bg_scale, mask_setting=mask_setting, integ_setting=integ_setting,
@@ -107,7 +108,7 @@ def instrucalib(
         ncpu=ncpu
     )
     img_path = PurePath(img_file)
-    io.write_out(output_dir, img_path.name, pdfgetter)
+    tio.write_pdfgetter(output_dir, img_path.name, pdfgetter)
     md.save(recipe, base_name=img_path.name, folder=output_dir)
     if show:
         plt.show()

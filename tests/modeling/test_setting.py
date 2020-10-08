@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pdfstream.modeling.setting import set_range, get_range, set_values, get_values, bound_ranges, \
+from pdffitx.modeling.setting import set_range, get_range, set_values, get_values, bound_ranges, \
     bound_windows, get_bounds
 
 

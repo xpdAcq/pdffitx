@@ -1,10 +1,9 @@
-import pprint
-
 import mongomock
+import pprint
 from mongomock.collection import Collection
 
-from pdfstream.parsers.atoms import dict_to_atoms, dict_to_atoms2
-from pdfstream.parsers.fitrecipe import recipe_to_dict, recipe_to_dict2
+from pdffitx.parsers.atoms import dict_to_atoms, dict_to_atoms2
+from pdffitx.parsers.fitrecipe import recipe_to_dict, recipe_to_dict2
 
 
 def test_recipe_to_dict(recipe):

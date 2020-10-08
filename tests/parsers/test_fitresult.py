@@ -1,7 +1,7 @@
 import pytest
 
-from pdfstream.parsers.fitrecipe import recipe_to_dict2
-from pdfstream.parsers.fitresult import to_dataframe, to_latex, rename_rule
+from pdffitx.parsers.fitrecipe import recipe_to_dict2
+from pdffitx.parsers.fitresult import to_dataframe, to_latex, rename_rule
 
 
 def test_to_latex(recipe):
