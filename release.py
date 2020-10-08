@@ -1,4 +1,5 @@
 """Used in release procedure."""
+import pkg_resources
 import shutil
 import subprocess
 import sys
@@ -7,10 +8,7 @@ from pathlib import Path
 
 # package info
 NAME = 'pdffitx'
-VERSION = '0.0.1'
 DESCRIPTION = "A python package to model atomic pair distribution function (PDF) based on diffpy-cmi."
-AUTHOR = "Songsheng Tao"
-AUTHOR_EMAIL = 'st3107@columbia.edu'
 URL = 'https://github.com/st3107/pdffitx'
 LICENSE = "BSD (3-clause)"
 GIT_ACCOUNT = "st3107"
@@ -52,8 +50,9 @@ def conda_build_config() -> dict:
 
 def conda_meta() -> dict:
     """Make the dictionary of conda meta information."""
-    name = NAME
-    version = VERSION
+    package = pkg_resources.require(NAME)[0]
+    name = package.project_name
+    version = package.version
     git_account = GIT_ACCOUNT
     build = read_dependencies(REQUIREMENTS / "build.txt")
     run = read_dependencies(REQUIREMENTS / "run.txt")
