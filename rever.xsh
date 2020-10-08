@@ -34,7 +34,7 @@ $ACTIVITIES = [
 
 $VERSION_BUMP_PATTERNS = [
     ('pdffitx/__init__.py', '__version__\s*=.*', "__version__ = '$VERSION'"),
-    ('release.py', 'VERSION\s*=.*', "VERSION = '$VERSION'")
+    ('setup.py', 'version\s*=.*,', "version='$VERSION',")
 ]
 
 $CHANGELOG_FILENAME = 'CHANGELOG.rst'
