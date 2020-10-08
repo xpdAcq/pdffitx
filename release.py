@@ -83,7 +83,7 @@ def conda_meta() -> dict:
         "about": {
             "home": URL,
             "license": LICENSE,
-            "license_file": LICENSE_FILE,
+            "license_file": str(LICENSE_FILE),
             "summary": DESCRIPTION,
             "dev_url": URL,
         }
