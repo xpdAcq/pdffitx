@@ -120,6 +120,7 @@ def multi_recipe(request, db):
     stru = request.param(NI_CIF_FILE)
     recipe = multi_phase([(F.sphericalCF, stru)], parser, fit_range=(2., 8.0, .1), values={
         'psize_G0': 200}, sg_params={'G0': 225})
+    recipe.residual()
     return recipe
 
 

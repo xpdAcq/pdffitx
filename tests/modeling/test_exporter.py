@@ -13,9 +13,9 @@ from pdffitx.modeling.exporter import save
         {"stru_fmt": "xyz"}
     ]
 )
-def test_save(optimized_recipe, kwargs):
+def test_save(multi_recipe, kwargs):
     with TemporaryDirectory() as temp_dir:
-        res_file, fgr_files, stru_files = save(optimized_recipe, base_name="test", folder=temp_dir, **kwargs)
+        res_file, fgr_files, stru_files = save(multi_recipe, base_name="test", folder=temp_dir, **kwargs)
         assert res_file.is_file()
         assert len(fgr_files) == 1 and fgr_files[0].is_file()
         assert len(stru_files) == 1 and stru_files[0].is_file()
