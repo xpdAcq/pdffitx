@@ -10,7 +10,7 @@ from pdffitx.parsers.fitrecipe import recipe_to_dict, recipe_to_dict2
 def test_recipe_to_dict(optimized_recipe):
     client = mongomock.MongoClient()
     collection: Collection = client.db.collection
-    dct = recipe_to_dict(recipe)
+    dct = recipe_to_dict(optimized_recipe)
     pprint.pprint(dct)
     # test db friendly
     collection.insert_one(dct)
@@ -20,7 +20,7 @@ def test_recipe_to_dict(optimized_recipe):
 def test_recipe_to_dict2(optimized_recipe):
     client = mongomock.MongoClient()
     collection: Collection = client.db.collection
-    dct = recipe_to_dict2(recipe)
+    dct = recipe_to_dict2(optimized_recipe)
     pprint.pprint(dct)
     collection.insert_one(dct)
     dict_to_atoms2(collection.find_one())
