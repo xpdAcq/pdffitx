@@ -5,6 +5,5 @@ exclude =
     build,
     dist,
     docs/source/conf.py
-    pdffitx/main.py
     pdffitx/data
 max-line-length = 115
