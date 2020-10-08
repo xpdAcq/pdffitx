@@ -1,14 +1,18 @@
 import fire
 
-import pdfstream.cli as cli
+import pdffitx.cli as cli
 
-COMMANDS = {
-    'average': cli.average,
-    'integrate': cli.integrate,
-    'waterfall': cli.waterfall,
-    'visualize': cli.visualize,
-    'instrucalib': cli.instrucalib
-}
+try:
+    import diffpy.pdfgetx
+
+    PDFGETX_AVAILABLE = True
+    del diffpy.pdfgetx
+except ImportError:
+    PDFGETX_AVAILABLE = False
+
+COMMANDS = {}
+if PDFGETX_AVAILABLE:
+    COMMANDS.update({"instrucalib": cli.instrucalib})
 
 
 def main():
