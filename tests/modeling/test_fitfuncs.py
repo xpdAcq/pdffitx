@@ -20,13 +20,13 @@ def test_make_generator(db, kwargs):
 @pytest.mark.parametrize(
     "arg", ["P1"]
 )
-def test_get_sgpars(recipe_two_strus, arg):
-    con = next(iter(recipe_two_strus.contributions.values()))
+def test_get_sgpars(multi_recipe, arg):
+    con = next(iter(multi_recipe.contributions.values()))
     gen = next(iter(con.generators.values()))
     get_sgpars(gen.phase, arg)
 
 
-def test_get_sgpars_error(recipe_two_strus, db):
+def test_get_sgpars_error(db):
     with pytest.raises(ValueError):
         get_sgpars(db['Ni_stru'])
 

@@ -130,14 +130,14 @@ def test_multi_phase(db, data_key, kwargs, free_params, use_cf, expected):
 @pytest.mark.parametrize(
     "kwargs",
     [
-        dict(tags=['scale_G0'], xtol=1e-2, gtol=1e-2, ftol=1e-2),
-        dict(tags=[('scale_G0', 'lat_G0'), 'adp_G0'], xtol=1e-2, gtol=1e-2, ftol=1e-2),
-        dict(tags=['scale_G0'], verbose=1, xtol=1e-2, gtol=1e-2, ftol=1e-2),
-        dict(tags=[('scale_G0', 'lat_G0'), 'adp_G0'], verbose=1, xtol=1e-2, gtol=1e-2, ftol=1e-2)
+        dict(tags=['G0_scale'], xtol=1e-2, gtol=1e-2, ftol=1e-2),
+        dict(tags=[('G0_scale', 'G0_lat'), 'G0_adp'], xtol=1e-2, gtol=1e-2, ftol=1e-2),
+        dict(tags=['G0_scale'], verbose=1, xtol=1e-2, gtol=1e-2, ftol=1e-2),
+        dict(tags=[('G0_scale', 'G0_lat'), 'G0_adp'], verbose=1, xtol=1e-2, gtol=1e-2, ftol=1e-2)
     ]
 )
-def test_optimize(recipe_two_strus, kwargs):
-    optimize(recipe_two_strus, **kwargs)
+def test_optimize(filled_recipe, kwargs):
+    optimize(filled_recipe, **kwargs)
 
 
 def test_fit_calib(db):
