@@ -13,14 +13,14 @@ AUTHOR = "Songsheng Tao"
 AUTHOR_EMAIL = 'st3107@columbia.edu'
 URL = 'https://github.com/st3107/pdffitx'
 LICENSE = "BSD (3-clause)"
-
-# conda info
+GIT_ACCOUNT = "st3107"
+# directory info
 REVER_DIR = Path("rever")
 REQUIREMENTS = Path("requirements")
+LICENSE_FILE = Path("LICENSE")
+# conda info
 CONDA_CHANNEL_SOURCES = ["defaults", "diffpy", "conda-forge"]
 CONDA_CHANNEL_TARGETS = ["st3107"]
-LICENSE_FILE = "LICENSE"
-GIT_ACCOUNT = "st3107"
 
 
 def conda_recipe() -> None:
