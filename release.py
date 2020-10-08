@@ -7,7 +7,7 @@ from pathlib import Path
 
 # package info
 NAME = 'pdffitx'
-VERSION = '0.0.0'
+VERSION = '0.0.1'
 DESCRIPTION = "A python package to model atomic pair distribution function (PDF) based on diffpy-cmi."
 AUTHOR = "Songsheng Tao"
 AUTHOR_EMAIL = 'st3107@columbia.edu'
