@@ -1,10 +1,11 @@
 [run]
 source =
-    pdfstream
+    pdffitx
 [report]
 omit =
     */python?.?/*
     */site-packages/nose/*
+    pdffitx/main.py
 
 exclude_lines =
     if __name__ == '__main__':
