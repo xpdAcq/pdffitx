@@ -17,5 +17,5 @@ def recipe(db):
 
 
 @pytest.fixture(scope="module")
-def doc2(recipe):
-    return recipe_to_dict2(recipe)
+def doc2(recipe_two_strus):
+    return recipe_to_dict2(recipe_two_strus)
