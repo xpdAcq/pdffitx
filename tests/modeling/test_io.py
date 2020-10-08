@@ -1,6 +1,6 @@
 import pytest
 
-from pdfstream.io import load_parser
+from pdffitx.io import load_parser
 
 
 @pytest.mark.parametrize(

@@ -1,8 +1,7 @@
 from tempfile import TemporaryDirectory
 
-import pytest
-
 import pdfstream.modeling.saving as S
+import pytest
 from pdfstream.modeling.main import optimize
 from pdfstream.modeling.saving import save
 

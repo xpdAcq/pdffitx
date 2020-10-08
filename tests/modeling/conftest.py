@@ -3,10 +3,10 @@ from diffpy.srfit.pdf import characteristicfunctions as F
 from diffpy.structure import loadStructure
 from pyobjcryst import loadCrystal
 
-from pdfstream.modeling.adding import initialize
-from pdfstream.modeling.creating import create
-from pdfstream.modeling.fitobjs import MyParser
-from pdfstream.modeling.main import multi_phase
+from pdffitx.modeling.adding import initialize
+from pdffitx.modeling.creating import create
+from pdffitx.modeling.fitobjs import MyParser
+from pdffitx.modeling.main import multi_phase
 from tests.conftest import NI_GR, NI_CIF
 
 

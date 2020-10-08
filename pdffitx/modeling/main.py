@@ -7,11 +7,11 @@ from diffpy.structure import Structure
 from matplotlib.axes import Axes
 from pyobjcryst.crystal import Crystal
 
-from pdfstream.modeling.fitfuncs import (
+from .exporter import save
+from .fitfuncs import (
     make_recipe, sgconstrain_all, cfconstrain_all, fit, plot, sgconstrain, cfconstrain
 )
-from pdfstream.modeling.fitobjs import MyRecipe, GenConfig, ConConfig, MyParser, FunConfig, MyContribution
-from pdfstream.modeling.saving import save
+from .fitobjs import MyRecipe, GenConfig, ConConfig, MyParser, FunConfig, MyContribution
 
 __all__ = [
     'multi_phase',

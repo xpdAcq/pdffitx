@@ -8,7 +8,7 @@ from diffpy.structure import Structure
 from pyobjcryst.crystal import Crystal
 from pyobjcryst.utils import writexyz
 
-from pdfstream.modeling.fitobjs import MyRecipe
+from .fitobjs import MyRecipe
 
 
 def save_fgr(con: FitContribution, base_name: str, folder: str) -> Path:
@@ -126,7 +126,7 @@ def save(
         The folder to save the result files.
 
     stru_fmt : str
-        The structure format. See :func:`~pdfstream.modeling.save.save_stru`.
+        The structure format. See :func:`~.exporter.save_stru`.
 
     Returns
     -------
