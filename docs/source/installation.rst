@@ -18,7 +18,7 @@ to transform the XRD data to PDF data.
 General Installation
 --------------------
 
-Users can install the `pdffitx` using conda. It is suggested to create a new environment for it.
+Users can install the package using conda. It is suggested to create a new environment for it.
 
 At the command line::
 
@@ -36,7 +36,7 @@ Activate the environment::
 
 Change the ``<path to .whl file>`` to the path of the .whl file on your computer.
 
-Before using the `pdffitx`, remember to activate the environment::
+Before using the package, remember to activate the environment::
 
     conda activate pdffitx_env
 
@@ -75,7 +75,7 @@ Install the `twine` for pypi release::
 
 Change the ``<path to .whl file>`` to the path of the .whl file on your computer.
 
-Install the `pdffitx` in development mode::
+Install the package in development mode::
 
     python -m pip install -e .
 

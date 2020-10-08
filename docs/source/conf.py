@@ -69,7 +69,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'pdffitx'
+project = 'PDFfitx'
 copyright = '2020, Songsheng Tao'
 author = 'Songsheng Tao'
 

@@ -1,5 +1,5 @@
-PDFstream Documentation
-=======================
+PDFfitx Documentation
+=====================
 
 .. toctree::
    :maxdepth: 2

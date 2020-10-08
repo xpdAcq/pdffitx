@@ -1,5 +1,5 @@
 ==================
-pdffitx Change Log
+PDFfitx Change Log
 ==================
 
 .. current developments
