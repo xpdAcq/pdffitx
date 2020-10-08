@@ -4,7 +4,7 @@ from rever.activity import activity
 @activity
 def conda_release():
     $PYTHON release.py
-    conda build $REVER_DIR/recipe
+    conda build $REVER_DIR/recipe --user $CONDA_ORG
     conda build purge
 
 
@@ -43,6 +43,8 @@ $TAG_REMOTE = 'git@github.com:st3107/pdffitx.git'
 
 $GITHUB_ORG = 'st3107'
 $GITHUB_REPO = 'pdffitx'
+
+$CONDA_ORG = 'diffpy'
 
 $SPHINX_HOST_DIR = 'docs/build'
 $GHPAGES_REPO = 'git@github.com:st3107/pdffitx.git'

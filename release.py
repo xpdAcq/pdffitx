@@ -1,10 +1,11 @@
 """Used in release procedure."""
-import pkg_resources
 import shutil
 import subprocess
 import sys
-import yaml
 from pathlib import Path
+
+import pkg_resources
+import yaml
 
 # package info
 NAME = 'pdffitx'
@@ -18,7 +19,7 @@ REQUIREMENTS = Path("requirements")
 LICENSE_FILE = Path("LICENSE")
 # conda info
 CONDA_CHANNEL_SOURCES = ["defaults", "diffpy", "conda-forge"]
-CONDA_CHANNEL_TARGETS = ["st3107"]
+CONDA_CHANNEL_TARGETS = ["diffpy"]
 
 
 def conda_recipe() -> None:
