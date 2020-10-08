@@ -1,11 +1,11 @@
 import typing as tp
 
-from numpy import ndarray
-
-from pdfstream.integration.main import get_chi, AzimuthalIntegrator
-from pdfstream.modeling.main import fit_calib, Crystal, MyParser, FIT_RANGE, MyRecipe
-from pdfstream.transformation.main import get_pdf
 from diffpy.pdfgetx import PDFConfig, PDFGetter
+from numpy import ndarray
+from pdfstream.integration.main import get_chi, AzimuthalIntegrator
+from pdfstream.transformation.main import get_pdf
+
+from pdffitx.modeling.main import fit_calib, Crystal, MyParser, FIT_RANGE, MyRecipe
 
 __all__ = [
     'calib_pipe'

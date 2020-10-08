@@ -6,7 +6,7 @@ from ase import Atoms, Atom
 from ase.spacegroup import crystal
 from diffpy.structure import loadStructure
 
-import pdfstream.parsers.tools as tools
+import pdffitx.parsers.tools as tools
 
 
 def dict_to_atoms(dct: dict, keys: tuple = ("genresults", 0), **kwargs) -> Atoms:

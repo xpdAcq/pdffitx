@@ -2,7 +2,7 @@ import typing as tp
 
 import numpy as np
 
-import pdfstream.parsers.tools as tools
+import pdffitx.parsers.tools as tools
 
 
 def dicts_to_array(dcts: tp.Iterable[dict], keys: tuple = ("conresults", 0),
