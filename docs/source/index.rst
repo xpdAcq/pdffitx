@@ -7,3 +7,4 @@ PDFstream Documentation
    installation
    auto_gallery/index
    min_versions
+   changelog
