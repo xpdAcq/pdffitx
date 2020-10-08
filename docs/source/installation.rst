@@ -22,7 +22,7 @@ Users can install the `pdffitx` using conda. It is suggested to create a new env
 
 At the command line::
 
-    conda create -n pdffitx_env -c st3107 pdfstream
+    conda create -n pdffitx_env -c st3107 pdffitx
 
 The ``pdfstream_env`` in the command is the name of the environment. It can be changed to any name.
 
