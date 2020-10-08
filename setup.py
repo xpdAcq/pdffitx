@@ -27,7 +27,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
 
 setup(
     name='pdffitx',
-    version='0.0.0',
+    version='0.0.1',
     description="A python package to model atomic pair distribution function (PDF) based on diffpy-cmi.",
     long_description=readme,
     author="Songsheng Tao",
