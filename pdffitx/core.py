@@ -7,6 +7,7 @@ from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.pdf import PDFGenerator, DebyePDFGenerator
 
 from pdffitx.modeling.adding import initialize
+from pdffitx.modeling.creating import create
 from pdffitx.modeling.main import optimize, view_fits
 
 
@@ -32,6 +33,27 @@ class MyRecipe(FitRecipe):
     @property
     def contributions(self) -> Dict[str, MyContribution]:
         return self._contributions
+
+    @classmethod
+    def create(
+        cls,
+        name: str,
+        data: MyParser,
+        arange: tp.Tuple[float, float, float],
+        equation: str,
+        functions: tp.Dict[str, tp.Callable],
+        structures: tp.Dict[str, S],
+        ncpu: int = None
+    ):
+        return create(
+            name=name,
+            data=data,
+            arange=arange,
+            equation=equation,
+            functions=functions,
+            structures=structures,
+            ncpu=ncpu
+        )
 
     def initialize(
         self,
