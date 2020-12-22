@@ -1,7 +1,9 @@
+"""Core of the PDFfitx."""
 from typing import Dict, Union
 
 from diffpy.srfit.equation.builder import EquationFactory
 from diffpy.srfit.fitbase import FitRecipe, FitContribution
+from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.pdf import PDFGenerator, DebyePDFGenerator
 
 from pdffitx.modeling.adding import initialize
@@ -117,3 +119,8 @@ class MyRecipe(FitRecipe):
     def visualize(self):
         """View the fit curves. Each FitContribution will be a plot."""
         view_fits(self)
+
+
+class MyFitResults(FitResults):
+    """The augmented fit result interface."""
+    pass
