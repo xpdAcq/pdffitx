@@ -8,7 +8,7 @@ from diffpy.structure import Structure
 from pyobjcryst.crystal import Crystal
 from pyobjcryst.utils import writexyz
 
-from .fitobjs import MyRecipe
+from . import MyRecipe
 
 
 def save_fgr(con: FitContribution, base_name: str, folder: str) -> Path:

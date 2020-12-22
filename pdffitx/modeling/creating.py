@@ -5,8 +5,9 @@ import typing as tp
 from diffpy.structure import Structure
 from pyobjcryst.crystal import Crystal
 
+from . import MyRecipe, MyContribution
 from .fitfuncs import make_contribution
-from .fitobjs import FunConfig, GenConfig, ConConfig, MyParser, MyRecipe, MyContribution
+from .fitobjs import FunConfig, GenConfig, ConConfig, MyParser
 
 S = tp.Union[Crystal, Structure]
 

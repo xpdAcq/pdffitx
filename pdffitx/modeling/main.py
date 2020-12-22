@@ -7,11 +7,12 @@ from diffpy.structure import Structure
 from matplotlib.axes import Axes
 from pyobjcryst.crystal import Crystal
 
+from . import MyRecipe, MyContribution
 from .exporter import save
 from .fitfuncs import (
     make_recipe, sgconstrain_all, cfconstrain_all, fit, plot, sgconstrain, cfconstrain
 )
-from .fitobjs import MyRecipe, GenConfig, ConConfig, MyParser, FunConfig, MyContribution
+from .fitobjs import GenConfig, ConConfig, MyParser, FunConfig
 
 __all__ = [
     'multi_phase',
@@ -19,7 +20,6 @@ __all__ = [
     'GenConfig',
     'ConConfig',
     'MyParser',
-    'MyRecipe',
     'report',
     'view_fits',
     'fit_calib',
@@ -180,7 +180,10 @@ def multi_phase(
     return recipe
 
 
-def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]], **kwargs) -> MyRecipe:
+def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]],
+             validate: bool = True,
+             verbose: int = 0,
+             **kwargs):
     """First fix all variables and then free the variables one by one and fit the recipe.
 
     Parameters
@@ -191,13 +194,27 @@ def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]], *
     tags
         The tags of variables to free. It can be single tag or a tuple of tags.
 
+    validate
+        Whether to validate the existences of the tags and variable names before the optimization.
+
+    verbose
+        How verbose the fit should be.
+
     kwargs
         The kwargs of the 'fit'.
     """
-    verbose = kwargs.pop('verbose', 0)
     if verbose > 0:
         print(f"Start {recipe.name} with all parameters fixed.")
-    recipe.fix('all')
+    if validate:
+        recipe.fix("all")
+        list(free_one_by_one(tags))
+    recipe.fix("all")
+    for _ in free_one_by_one(tags):
+        fit(recipe, verbose=verbose, **kwargs)
+    return
+
+
+def free_one_by_one(tags: tp.List[tp.Union[str, tp.Iterable[str]]]) -> tp.Generator:
     for n, tag in enumerate(tags):
         if isinstance(tag, str):
             if verbose > 0:
@@ -211,8 +228,7 @@ def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]], *
                     )
                 )
             recipe.free(*tag)
-        fit(recipe, verbose=verbose, **kwargs)
-    return recipe
+        yield None
 
 
 def report(recipe: MyRecipe) -> FitResults:

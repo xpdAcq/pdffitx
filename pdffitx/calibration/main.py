@@ -5,7 +5,8 @@ from numpy import ndarray
 from pdfstream.integration.main import get_chi, AzimuthalIntegrator
 from pdfstream.transformation.main import get_pdf
 
-from pdffitx.modeling.main import fit_calib, Crystal, MyParser, FIT_RANGE, MyRecipe
+from pdffitx.modeling import MyRecipe
+from pdffitx.modeling.main import fit_calib, Crystal, MyParser, FIT_RANGE
 
 __all__ = [
     'calib_pipe'

@@ -9,8 +9,8 @@ from diffpy.structure.structure import Structure
 from pyobjcryst.crystal import Crystal
 from pyobjcryst.spacegroup import SpaceGroup
 
+from pdffitx.modeling import MyRecipe, MyContribution
 from pdffitx.modeling.exporter import save_stru
-from pdffitx.modeling.fitobjs import MyRecipe, MyContribution
 
 GEN = tp.Union[PDFGenerator, DebyePDFGenerator]
 

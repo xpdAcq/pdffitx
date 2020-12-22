@@ -1,17 +1,16 @@
 """Objects used in the fitting."""
-from typing import Union, List, Callable, Dict, Tuple
+from typing import Union, List, Callable, Tuple
 
 import numpy as np
 from diffpy.pdfgetx import PDFGetter, PDFConfig
-from diffpy.srfit.equation.builder import EquationFactory
-from diffpy.srfit.fitbase import FitRecipe, ProfileGenerator, FitContribution
-from diffpy.srfit.pdf import PDFParser, PDFGenerator, DebyePDFGenerator
+from diffpy.srfit.fitbase import ProfileGenerator
+from diffpy.srfit.pdf import PDFParser
 from diffpy.structure import Structure
 from numpy import ndarray
 from pyobjcryst.crystal import Crystal
 from pyobjcryst.molecule import Molecule
 
-__all__ = ["GenConfig", "FunConfig", "ConConfig", "MyRecipe", "MyParser", "MyContribution"]
+__all__ = ["GenConfig", "FunConfig", "ConConfig", "MyParser"]
 
 Stru = Union[Crystal, Molecule, Structure]
 
@@ -222,25 +221,3 @@ class ConConfig:
         self.weight = weight
 
 
-class MyContribution(FitContribution):
-    """The FitContribution with augmented features."""
-
-    @property
-    def generators(self) -> Dict[str, Union[PDFGenerator, DebyePDFGenerator]]:
-        return self._generators
-
-    @property
-    def eqfactory(self) -> EquationFactory:
-        return self._eqfactory
-
-    @property
-    def xname(self) -> str:
-        return self._xname
-
-
-class MyRecipe(FitRecipe):
-    """The FitRecipe with augmented features."""
-
-    @property
-    def contributions(self) -> Dict[str, MyContribution]:
-        return self._contributions

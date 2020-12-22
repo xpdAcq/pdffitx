@@ -4,7 +4,7 @@ import typing as tp
 from diffpy.srfit.fitbase.parameter import Parameter
 from numpy import ndarray
 
-from .fitobjs import MyRecipe
+from . import MyRecipe
 
 
 def set_range(
@@ -12,7 +12,7 @@ def set_range(
     rmin: tp.Tuple[str, float] = None,
     rmax: tp.Tuple[str, float] = None,
     rstep: tp.Tuple[str, float] = None
-) -> MyRecipe:
+):
     """Set fitting range of the single contribution in the recipe.
 
     Parameters
@@ -28,15 +28,10 @@ def set_range(
 
     rstep :
         The step of fitting range. If None, keep original value. If "obs", use data value.
-
-    Returns
-    -------
-    recipe :
-        The recipe same as the input. Operation is done in place.
     """
     con = next(iter(recipe.contributions.values()))
     con.profile.setCalculationRange(xmin=rmin, xmax=rmax, dx=rstep)
-    return recipe
+    return
 
 
 def get_range(recipe: MyRecipe) -> ndarray:
@@ -119,7 +114,7 @@ def get_values(recipe: MyRecipe, names: tp.Iterable[str]) -> tp.List[tp.Union[fl
 def bound_ranges(
     recipe: MyRecipe, bounds: tp.Dict[str, tp.Union[tp.Tuple, tp.Dict]],
     ignore: bool = False, ratio: bool = False
-) -> MyRecipe:
+):
     """Bound the variables in the recipe by in (lower bound, upper bound).
 
     Parameters
@@ -137,17 +132,12 @@ def bound_ranges(
         If True, the bound is a ratio. The real bound will be the value of the variable * the value of bound.
         e. g. bound (0.1, 1.1) means that the lower bound is 10% and the upper bound is 110% of the initial
         value of the variable.
-
-    Returns
-    -------
-    recipe :
-        The input recipe with operation done in place.
     """
     for name, bound in bounds.items():
         variable = get_variable(recipe, name, ignore=ignore)
         if variable:
             bound_range(variable, bound, ratio=ratio)
-    return recipe
+    return
 
 
 def bound_range(variable: Parameter, bound: tp.Union[tp.Tuple, tp.Dict], ratio: bool = False) -> Parameter:
@@ -168,7 +158,7 @@ def bound_range(variable: Parameter, bound: tp.Union[tp.Tuple, tp.Dict], ratio: 
 def bound_windows(
     recipe: MyRecipe, bounds: tp.Dict[str, tp.Union[float, tp.Tuple, tp.Dict]],
     ignore: bool = False, ratio: bool = False
-) -> MyRecipe:
+):
     """Bound the variables in the recipe by (variable - lower bound, variable + upper bound).
 
 
@@ -187,17 +177,12 @@ def bound_windows(
         If True, the bound is a ratio. The real bound will be the value of the variable * the value of bound.
         e. g. bound (0.1, 0.2) means that the lower bound is 90% and the upper bound is 120% of the initial
         value of the variable.
-
-    Returns
-    -------
-    recipe :
-        The input recipe with operation done in place.
     """
     for name, bound in bounds.items():
         variable = get_variable(recipe, name, ignore=ignore)
         if variable:
             bound_window(variable, bound, ratio=ratio)
-    return recipe
+    return
 
 
 def bound_window(
