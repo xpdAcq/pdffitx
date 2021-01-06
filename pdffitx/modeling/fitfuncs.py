@@ -13,7 +13,7 @@ from matplotlib.axes import Axes
 from pdfstream.visualization.main import visualize
 from scipy.optimize import least_squares
 
-from . import MyRecipe, MyContribution
+from pdffitx.core import MyRecipe, MyContribution
 from .fitobjs import MyParser, ConConfig, GenConfig
 
 __all__ = [

@@ -7,7 +7,7 @@ from diffpy.structure import Structure
 from matplotlib.axes import Axes
 from pyobjcryst.crystal import Crystal
 
-from . import MyRecipe, MyContribution
+from pdffitx.core import MyRecipe, MyContribution
 from .exporter import save
 from .fitfuncs import (
     make_recipe, sgconstrain_all, cfconstrain_all, fit, plot, sgconstrain, cfconstrain
