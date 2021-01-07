@@ -3,7 +3,7 @@
 from diffpy.structure import loadStructure
 from pyobjcryst import loadCrystal
 
-from pdffitx.modeling import MyParser
+from pdffitx.modeling.fitobjs import MyParser
 
 load_crystal = loadCrystal
 load_structure = loadStructure

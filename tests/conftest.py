@@ -1,4 +1,5 @@
 """Configuration of pytest."""
+import diffpy.srfit.pdf.characteristicfunctions as F
 import numpy
 import pyFAI
 import pytest
@@ -11,7 +12,9 @@ from pyobjcryst.molecule import Molecule
 
 from pdffitx.io import load_parser
 # data file
-from pdffitx.modeling import create, initialize, optimize, F, multi_phase
+from pdffitx.modeling.creating import create
+from pdffitx.modeling.main import optimize, multi_phase
+from pdffitx.modeling.setting import initialize
 from pdffitx.parsers import recipe_to_dict2
 
 NI_PONI_FILE = resource_filename('tests', 'test_data/Ni_poni_file.poni')
