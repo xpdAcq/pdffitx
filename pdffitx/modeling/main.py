@@ -207,28 +207,21 @@ def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]],
         print(f"Start {recipe.name} with all parameters fixed.")
     if validate:
         recipe.fix("all")
-        list(free_one_by_one(tags))
+        list(free_one_by_one(recipe, tags))
     recipe.fix("all")
-    for _ in free_one_by_one(tags):
+    for tag_lst in free_one_by_one(recipe, tags):
+        if verbose > 0:
+            print("Free {} ...".format(", ".join(tag_lst)))
         fit(recipe, verbose=verbose, **kwargs)
     return
 
 
-def free_one_by_one(tags: tp.List[tp.Union[str, tp.Iterable[str]]]) -> tp.Generator:
+def free_one_by_one(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]]) -> tp.Generator:
+    """Free the tags one by one."""
     for n, tag in enumerate(tags):
-        if isinstance(tag, str):
-            if verbose > 0:
-                print("Free {} ...".format(tag))
-            recipe.free(tag)
-        else:
-            if verbose > 0:
-                print(
-                    "Free {} ...".format(
-                        ", ".join(tag)
-                    )
-                )
-            recipe.free(*tag)
-        yield None
+        tag_lst = [tag] if isinstance(tag, str) else tag
+        recipe.free(*tag_lst)
+        yield tag_lst
 
 
 def report(recipe: MyRecipe) -> FitResults:
