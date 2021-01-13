@@ -4,7 +4,7 @@ import typing as tp
 from diffpy.srfit.fitbase.parameter import Parameter
 from numpy import ndarray
 
-from pdffitx.core import MyRecipe
+from pdffitx.modeling.core import MyRecipe
 
 
 def set_range(

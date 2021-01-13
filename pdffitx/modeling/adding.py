@@ -3,7 +3,7 @@ import typing as tp
 
 from diffpy.srfit.pdf import PDFGenerator, DebyePDFGenerator
 
-from pdffitx.core import MyRecipe, MyContribution
+from pdffitx.modeling.core import MyRecipe, MyContribution
 
 G = tp.Union[PDFGenerator, DebyePDFGenerator]
 

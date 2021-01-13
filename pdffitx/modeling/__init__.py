@@ -2,12 +2,12 @@ import diffpy.srfit.pdf.characteristicfunctions as F
 from diffpy.srfit.fitbase import PlotFitHook
 from diffpy.srfit.pdf import PDFGenerator, DebyePDFGenerator, PDFContribution
 
-from pdffitx.core import MyRecipe, MyContribution
+from pdffitx.modeling.core import MyRecipe, MyContribution
 from .adding import add_gen_vars, add_con_vars, initialize
 from .creating import create
 from .exporter import save
 from .fitobjs import MyParser
-from .main import multi_phase, optimize, view_fits, report, fit_calib
+from .running import multi_phase, optimize, view_fits, report, fit_calib
 from .setting import set_range, get_range, set_values, get_values, bound_windows, bound_ranges, \
     get_bounds, get_bound_dct, get_value_dct
 

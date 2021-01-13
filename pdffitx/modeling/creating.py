@@ -5,7 +5,7 @@ import typing as tp
 from diffpy.structure import Structure
 from pyobjcryst.crystal import Crystal
 
-from pdffitx.core import MyRecipe, MyContribution
+from pdffitx.modeling.core import MyRecipe, MyContribution
 from .fitfuncs import make_contribution
 from .fitobjs import FunConfig, GenConfig, ConConfig, MyParser
 

@@ -14,7 +14,7 @@ from pdffitx.io import load_parser
 from pdffitx.modeling.adding import initialize
 # data file
 from pdffitx.modeling.creating import create
-from pdffitx.modeling.main import optimize, multi_phase
+from pdffitx.modeling.running import optimize, multi_phase
 from pdffitx.parsers import recipe_to_dict2
 
 NI_PONI_FILE = resource_filename('tests', 'test_data/Ni_poni_file.poni')

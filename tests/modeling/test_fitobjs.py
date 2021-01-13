@@ -3,7 +3,7 @@ import pytest
 
 import pdffitx.modeling.fitobjs as fitobjs
 from pdffitx.modeling.fitobjs import MyParser, GenConfig, ConConfig
-from pdffitx.modeling.main import multi_phase
+from pdffitx.modeling.running import multi_phase
 
 
 @pytest.mark.parametrize(
