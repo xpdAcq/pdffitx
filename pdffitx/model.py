@@ -229,6 +229,12 @@ class ModelBase:
             var: Parameter = getattr(self._recipe, name)
             var.setValue(value)
 
+    def get_param(self, name: str) -> Parameter:
+        """Get the parameters."""
+        if not hasattr(self._recipe, name):
+            raise ValueError("No such parameter call '{}' in the recipe.".format(name))
+        return getattr(self._recipe, name)
+
     def set_bound(self, **kwargs) -> None:
         """Set the bound.
 
@@ -440,8 +446,12 @@ class ModelBase:
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
-    def __init__(self, equation: str, structures: tp.Dict[str, Crystal],
-                 characteristics: tp.Dict[str, tp.Callable]):
+    def __init__(self, equation: str, structures: tp.Dict[str, Crystal] = None,
+                 characteristics: tp.Dict[str, tp.Callable] = None):
+        if structures is None:
+            structures = {}
+        if characteristics is None:
+            characteristics = {}
         self._equation = equation
         self._structures = structures
         self._characteristics = characteristics
@@ -450,8 +460,6 @@ class MultiPhaseModel(ModelBase):
 
     def _create_recipe(self) -> md.MyRecipe:
         n = len(self._structures)
-        if n != 2:
-            raise ValueError("The model needs exactly two structures. Currently, it has {}".format(n))
         pgs = []
         for name, structure in self._structures.items():
             pg = md.PDFGenerator(name)
