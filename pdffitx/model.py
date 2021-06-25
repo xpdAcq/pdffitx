@@ -74,6 +74,51 @@ def get_unit(name: str) -> str:
     return ""
 
 
+def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwargs) -> None:
+    """Plot the fitted curves."""
+    if ax is None:
+        ax = plt.gca()
+    kwargs.setdefault("xlim", [0, fits["x"][-1].item()])
+    kwargs.setdefault("marker", "o")
+    kwargs.setdefault("fillstyle", "none")
+    kwargs.setdefault("ls", "none")
+    fits["yobs"].plot.line(ax=ax, **kwargs)
+    ax.plot(fits["x"], fits["ycalc"])
+    diff = fits["y"] - fits["ycalc"]
+    shift = offset + fits["y"].min() - diff.max()
+    diff += shift
+    ax.axhline(shift, ls='--', alpha=0.5, color="black")
+    ax.plot(fits["x"], diff)
+    return
+
+
+def plot_fits_along_dim(
+    fits: xr.Dataset, dim: str, num_row: int = 1, offset: float = 0.,
+    figure_config: dict = None, grid_config: dict = None, plot_config: dict = None
+) -> tp.List[plt.Axes]:
+    """Plot the fitted curves in multiple panels."""
+    n = len(fits[dim])
+    num_col = math.ceil(n / num_row)
+    if grid_config is None:
+        grid_config = {}
+    grid_config.setdefault("wspace", 0.25)
+    grid_config.setdefault("hspace", 0.25)
+    if plot_config is None:
+        plot_config = {}
+    if figure_config is None:
+        figure_config = {}
+    figure_config.setdefault("figsize", (4 * num_col, 3 * num_row))
+    fig: plt.Figure = plt.figure(**figure_config)
+    grids = gridspec.GridSpec(num_row, num_col, figure=fig, **grid_config)
+    axes = []
+    for i, grid in zip(fits[dim], grids):
+        fit = fits.isel({dim: i})
+        ax = fig.add_subplot(grid)
+        axes.append(ax)
+        plot_fits(fit, offset, ax=ax, **plot_config)
+    return axes
+
+
 class ModelBase:
     """The template for the model class."""
 
@@ -361,7 +406,19 @@ class ModelBase:
         return dct
 
     def save(self, directory: str, file_prefix: str) -> None:
-        """Save the model parameters. Must update before save."""
+        """Save the model parameters. Must update before save.
+
+        Parameters
+        ----------
+        directory :
+            The directory to export the files.
+        file_prefix :
+            The prefix of the file name.
+
+        Returns
+        -------
+        None
+        """
         directory = pathlib.Path(directory)
         if not directory.is_dir():
             directory.mkdir(parents=True)
@@ -412,7 +469,19 @@ class ModelBase:
         return ds
 
     def save_result(self, directory: str, file_prefix: str) -> None:
-        """Save the fitting result."""
+        """Save the fitting result.
+
+        Parameters
+        ----------
+        directory :
+            The directory to export the files.
+        file_prefix :
+            The prefix of the file name.
+
+        Returns
+        -------
+        None
+        """
         directory = pathlib.Path(directory)
         if not directory.is_dir():
             directory.mkdir(parents=True)
@@ -421,7 +490,19 @@ class ModelBase:
         result.to_netcdf(path)
 
     def save_fits(self, directory: str, file_prefix: str) -> None:
-        """Save the fitted curves."""
+        """Save the fitted curves.
+
+        Parameters
+        ----------
+        directory :
+            The directory to export the files.
+        file_prefix :
+            The prefix of the file name.
+
+        Returns
+        -------
+        None
+        """
         directory = pathlib.Path(directory)
         if not directory.is_dir():
             directory.mkdir(parents=True)
@@ -430,14 +511,32 @@ class ModelBase:
         fits.to_netcdf(path)
 
     def save_all(self, directory: str, file_prefix: str) -> None:
-        """Export the results, fits and structures in a directory."""
+        """Save the results, fits and structures in a directory.
+
+        Parameters
+        ----------
+        directory :
+            The directory to export the files.
+        file_prefix :
+            The prefix of the file name.
+
+        Returns
+        -------
+        None
+        """
         self.save(directory, file_prefix)
         self.save_result(directory, file_prefix)
         self.save_fits(directory, file_prefix)
 
     def plot(self) -> None:
-        """View the fitted curves."""
-        md.view_fits(self._recipe)
+        """View the fitted curves.
+
+        Returns
+        -------
+        None
+        """
+        fits = self.export_fits()
+        plot_fits(fits)
 
 
 class MultiPhaseModel(ModelBase):
@@ -503,42 +602,3 @@ class MultiPhaseModel(ModelBase):
             path = directory.joinpath("{}_{}.cif".format(file_prefix, name))
             with path.open("w") as f:
                 structure.CIFOutput(f)
-
-
-def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwargs) -> None:
-    """Plot the fitted curves."""
-    if ax is None:
-        ax = plt.gca()
-    fits["yobs"].plot.line(ax=ax, marker="o", fillstyle="none", ls="none", **kwargs)
-    fits["ycalc"].plot.line(ax=ax, _labels=False, **kwargs)
-    diff = fits["y"] - fits["ycalc"]
-    shift = offset + fits["y"].min() - diff.max()
-    diff += shift
-    ax.axhline(shift, ls='--', alpha=0.5, color="black")
-    diff.plot.line(ax=ax, _labels=False, **kwargs)
-    ax.set_title("")
-    return
-
-
-def plot_fits_along_dim(
-    fits: xr.Dataset, dim: str, num_col: int = 4, offset: float = 0.,
-    figure_config: dict = None, grid_config: dict = None, plot_config: dict = None
-) -> tp.List[plt.Axes]:
-    """Plot the fitted curves in multiple panels."""
-    if grid_config is None:
-        grid_config = {}
-    if plot_config is None:
-        plot_config = {}
-    if figure_config is None:
-        figure_config = {}
-    fig: plt.Figure = plt.figure(**figure_config)
-    n = len(fits[dim])
-    num_row = math.ceil(n / num_col)
-    grids = gridspec.GridSpec(num_row, num_col, figure=fig, **grid_config)
-    axes = []
-    for i, grid in zip(fits[dim], grids):
-        fit = fits.isel({dim: i})
-        ax = fig.add_subplot(grid)
-        axes.append(ax)
-        plot_fits(fit, offset, ax=ax, **plot_config)
-    return axes

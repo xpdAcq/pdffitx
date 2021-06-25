@@ -1,11 +1,15 @@
 import pathlib
 
 import diffpy.srfit.pdf.characteristicfunctions as F
+import matplotlib.pyplot as plt
 import pytest
+import xarray as xr
 
 import pdffitx.files as files
 import pdffitx.io as io
 import pdffitx.model as mod
+
+plt.ioff()
 
 
 def test_MultiPhaseModel_1(tmpdir):
@@ -56,6 +60,24 @@ def test_MultiPhaseModel_1(tmpdir):
     assert td.joinpath("test_result.nc").is_file()
     assert td.joinpath("test_fits.nc").is_file()
     assert td.joinpath("test_Ni.cif").is_file()
+
+    # plot the fits
+    model.plot()
+    plt.show(block=False)
+    plt.clf()
+
+    # plot the exported fits
+    ds = model.export_fits()
+    fig, ax = plt.subplots()
+    mod.plot_fits(ds, ax=ax)
+    plt.show(block=False)
+    plt.clf()
+
+    # plot the stacked fits
+    ds2 = xr.concat([ds, ds], dim="dim_0")
+    mod.plot_fits_along_dim(ds2, "dim_0")
+    plt.show(block=False)
+    plt.clf()
 
 
 def test_MultiPhaseModel_2(tmpdir):
