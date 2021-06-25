@@ -528,7 +528,7 @@ class ModelBase:
         self.save_result(directory, file_prefix)
         self.save_fits(directory, file_prefix)
 
-    def plot(self) -> None:
+    def plot(self, **kwargs) -> None:
         """View the fitted curves.
 
         Returns
@@ -536,7 +536,7 @@ class ModelBase:
         None
         """
         fits = self.export_fits()
-        plot_fits(fits)
+        plot_fits(fits, **kwargs)
 
 
 class MultiPhaseModel(ModelBase):
