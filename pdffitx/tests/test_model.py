@@ -1,6 +1,7 @@
 import pathlib
 
 import diffpy.srfit.pdf.characteristicfunctions as F
+import pytest
 
 import pdffitx.files as files
 import pdffitx.io as io
@@ -58,6 +59,8 @@ def test_MultiPhaseModel_1(tmpdir):
 
 
 def test_MultiPhaseModel_2(tmpdir):
-    model = mod.MultiPhaseModel()
-    model.reset_equation("2 * x")
-    assert model.get_equation() == "(2 * x)"
+    model = mod.MultiPhaseModel(equation="2 * x + a")
+    assert model.get_equation() == "((2 * x) + a)"
+    assert model.get_param("a")
+    with pytest.raises(ValueError):
+        model.get_param("x")

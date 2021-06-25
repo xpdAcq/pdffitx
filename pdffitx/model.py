@@ -443,13 +443,13 @@ class ModelBase:
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
-    def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
+    def __init__(self, equation: str, structures: tp.Dict[str, Crystal] = None,
                  characteristics: tp.Dict[str, tp.Callable] = None):
         if structures is None:
             structures = {}
         if characteristics is None:
             characteristics = {}
-        self._equation = equation if equation else ""
+        self._equation = equation
         self._structures = structures
         self._characteristics = characteristics
         recipe = self._create_recipe()
@@ -475,12 +475,6 @@ class MultiPhaseModel(ModelBase):
         fr.addContribution(fc)
         md.initialize(fr)
         return fr
-
-    def reset_equation(self, eq: str) -> None:
-        """Set the equation."""
-        self._equation = eq
-        fc = self.get_contribution()
-        fc.setEquation(eq)
 
     def get_equation(self) -> str:
         """Get the equation."""
