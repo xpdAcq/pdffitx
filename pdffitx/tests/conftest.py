@@ -6,10 +6,11 @@ import pytest
 from diffpy.pdfgetx import PDFConfig, PDFGetter
 from diffpy.structure import loadStructure
 from pdfstream.io import load_img, load_array
-from pkg_resources import resource_filename
 from pyobjcryst import loadCrystal
 from pyobjcryst.molecule import Molecule
 
+from pdffitx.files import NI_PONI_FILE, NI_GR_FILE, NI_CHI_FILE, NI_FGR_FILE, NI_IMG_FILE, MASK_FILE, \
+    KAPTON_IMG_FILE, BLACK_IMG_FILE, WHITE_IMG_FILE, ZRP_CIF_FILE, NI_CIF_FILE
 from pdffitx.io import load_parser
 from pdffitx.modeling.adding import initialize
 # data file
@@ -17,15 +18,6 @@ from pdffitx.modeling.creating import create
 from pdffitx.modeling.running import optimize, multi_phase
 from pdffitx.parsers import recipe_to_dict2
 
-NI_PONI_FILE = resource_filename('pdffitx', 'data/Ni_poni_file.poni')
-NI_GR_FILE = resource_filename('pdffitx', 'data/Ni_gr_file.gr')
-NI_CHI_FILE = resource_filename('pdffitx', 'data/Ni_chi_file.chi')
-NI_FGR_FILE = resource_filename('pdffitx', 'data/Ni_fgr_file.fgr')
-NI_IMG_FILE = resource_filename('pdffitx', 'data/Ni_img_file.tiff')
-MASK_FILE = resource_filename("pdffitx", "data/mask_file.npy")
-KAPTON_IMG_FILE = resource_filename('pdffitx', 'data/Kapton_img_file.tiff')
-BLACK_IMG_FILE = resource_filename('pdffitx', 'data/black_img.tiff')
-WHITE_IMG_FILE = resource_filename('pdffitx', 'data/white_img.tiff')
 NI_IMG = load_img(NI_IMG_FILE)
 KAPTON_IMG = load_img(KAPTON_IMG_FILE)
 NI_GR = load_array(NI_GR_FILE)
@@ -38,9 +30,6 @@ AI = pyFAI.load(NI_PONI_FILE)
 MASK = numpy.load(MASK_FILE)
 BLACK_IMG = load_img(BLACK_IMG_FILE)
 WHITE_IMG = load_img(WHITE_IMG_FILE)
-# model file
-ZRP_CIF_FILE = resource_filename('pdffitx', 'data/ZrP_cif_file.cif')
-NI_CIF_FILE = resource_filename("pdffitx", "data/Ni_cif_file.cif")
 NI_CRYSTAL = loadCrystal(NI_CIF_FILE)
 ZRP_CRYSTAL = loadCrystal(ZRP_CIF_FILE)
 NI_DIFFPY = loadStructure(NI_CIF_FILE)

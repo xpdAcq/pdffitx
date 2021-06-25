@@ -6,9 +6,9 @@ from pathlib import PurePath
 import fire
 import matplotlib.pyplot as plt
 import pdfstream.io as pio
-from pkg_resources import resource_filename
 
 import pdffitx.calibration as calib
+import pdffitx.files as files
 import pdffitx.io as io
 import pdffitx.modeling as md
 
@@ -100,9 +100,9 @@ def instrucalib(
         print(str(e))
         sys.exit(1)
     if cfg_file is None:
-        cfg_file = resource_filename('pdffitx', 'data/Ni_cfg_file.cfg')
+        cfg_file = files.NI_CFG_FILE
     if stru_file is None:
-        stru_file = resource_filename('pdffitx', 'data/Ni_cif_file.cif')
+        stru_file = files.NI_CIF_FILE
     ai = pio.load_ai_from_poni_file(poni_file)
     img = pio.load_img(img_file)
     pdfconfig = tio.load_pdfconfig(cfg_file)
