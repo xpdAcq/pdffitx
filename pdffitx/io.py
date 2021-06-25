@@ -1,6 +1,9 @@
 """The input / output functions related to file system."""
+import fabio
+import numpy as np
 from diffpy.srfit.fitbase import Profile
 from diffpy.structure import loadStructure
+from diffpy.utils.parsers.loaddata import loadData
 from pyobjcryst import loadCrystal
 
 from pdffitx import modeling as md
@@ -37,3 +40,14 @@ def load_profile(filename: str, metadata: dict = None) -> Profile:
     parser.parseFile(filename, metadata)
     profile.loadParsedData(parser)
     return profile
+
+
+def load_img(img_file: str) -> np.ndarray:
+    """Load the img data from the img_file."""
+    img = fabio.open(img_file).data
+    return img
+
+
+def load_array(data_file: str, minrows=10, **kwargs) -> np.ndarray:
+    """Load data columns from the .txt file and turn columns to rows and return the numpy array."""
+    return loadData(data_file, minrows=minrows, **kwargs).T
