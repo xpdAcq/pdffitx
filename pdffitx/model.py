@@ -382,8 +382,7 @@ class ModelBase:
         None
         """
         if not self._order:
-            print("No parameters to refine.")
-            return
+            raise ValueError("No parameters to refine.")
         md.optimize(self._recipe, self._order, validate=False, verbose=self._verbose, **self._options)
         rw = self.get_rw()
         if self._verbose > 0:
