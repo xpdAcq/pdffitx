@@ -79,6 +79,7 @@ class ModelBase:
 
     def __init__(self, recipe: md.MyRecipe):
         self._recipe = recipe
+        self._contribution = next(iter(recipe.contributions.values()))
         self._fit_result = FitResults(self._recipe, update=False)
         self._verbose: int = 1
         self._order: tp.List[tp.Union[str, tp.Iterable[str]]] = []
@@ -279,7 +280,35 @@ class ModelBase:
         -------
         A FitContribution.
         """
-        return next(iter(self._recipe.contributions.values()))
+        return self._contribution
+
+    def get_generators(self) -> tp.Dict[str, tp.Callable]:
+        """Get the generators in a dictionary."""
+        return self.get_contribution().generators
+
+    def calc_phase(self, name: str) -> xr.DataArray:
+        """Calculate the data from a generator.
+
+        Parameters
+        ----------
+        name :
+            The name of a generator.
+
+        Returns
+        -------
+        A xarray.DataArray of calculated y with x as the coordinate.
+        """
+        gs = self.get_generators()
+        p = self.get_profile()
+        if name not in gs:
+            raise KeyError("There are no generators named '{}'.".format(name))
+        y = gs[name](p.x)
+        arr = xr.DataArray(y, coords={"x": x}, dims=["x"])
+        arr["y"].attrs["standard_name"] = "G"
+        arr["y"].attrs["units"] = r"Å$^{-2}$"
+        arr["x"].attrs["standard_name"] = "r"
+        arr["x"].attrs["units"] = "Å"
+        return arr
 
     def set_profile(self, profile: Profile) -> None:
         """Set the data profile.
@@ -295,6 +324,11 @@ class ModelBase:
         """
         fc: md.MyContribution = self.get_contribution()
         fc.setProfile(profile)
+
+    def get_profile(self) -> Profile:
+        """Get the data profile."""
+        fc = self.get_contribution()
+        return fc.profile
 
     def optimize(self) -> None:
         """Optimize the model. The scipy.optimize.least_squares is used.
@@ -327,11 +361,6 @@ class ModelBase:
             dct[fr.fixednames[i]] = fr.fixedvals[i]
         dct["rw"] = self._fit_result.rw
         return dct
-
-    def get_profile(self) -> Profile:
-        """Get the data profile."""
-        fc = self.get_contribution()
-        return fc.profile
 
     def save(self, filepath: str) -> None:
         """Save the model parameters. Must update before save."""
