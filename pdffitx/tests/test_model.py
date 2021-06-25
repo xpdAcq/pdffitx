@@ -34,11 +34,21 @@ def test_MultiPhaseModel_1(tmpdir):
         assert g.getQmax() == metadata["qmax"]
         assert g.getQmin() == metadata["qmin"]
 
-    # test the set methods
-    psize = model.get_param("psize")
-    model.set_param(psize=150.)
+    # there shouldn't be any parameters named r and x
+    with pytest.raises(KeyError):
+        model.get_param("r")
+    with pytest.raises(KeyError):
+        model.get_param("x")
+
+    # test the parameters added
+    for p in ["f_psize", "Ni_scale", "Ni_a"]:
+        assert model.get_param(p)
+
+    # test set and get
+    psize = model.get_param("f_psize")
+    model.set_value(f_psize=150.)
     assert psize.getValue() == 150.
-    model.set_bound(psize=(0., 200.))
+    model.set_bound(f_psize=(0., 200.))
     assert psize.bounds == [0., 200.]
     model.set_rel_bound(Ni_a=(0.2, 0.15))
     a = model.get_param("Ni_a")
@@ -81,8 +91,10 @@ def test_MultiPhaseModel_1(tmpdir):
 
 
 def test_MultiPhaseModel_2(tmpdir):
-    model = mod.MultiPhaseModel(equation="2 * x + a")
-    assert model.get_equation() == "((2 * x) + a)"
+    model = mod.MultiPhaseModel(equation="2 * r + a")
+    assert model.get_equation() == "((2 * r) + a)"
     assert model.get_param("a")
-    with pytest.raises(ValueError):
-        model.get_param("x")
+    with pytest.raises(KeyError):
+        model.get_param("r")
+    with pytest.raises(KeyError):
+        model.set_value(b=1)

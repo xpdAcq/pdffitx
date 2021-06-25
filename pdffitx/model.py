@@ -1,3 +1,4 @@
+import inspect
 import math
 import pathlib
 import typing as tp
@@ -13,6 +14,37 @@ from diffpy.srfit.fitbase.profile import Profile
 from pyobjcryst.crystal import Crystal
 
 import pdffitx.modeling as md
+
+
+def get_arg_names(func: tp.Callable) -> tp.List[str]:
+    """Get all the names of arguments.
+
+    Parameters
+    ----------
+    func
+
+    Returns
+    -------
+
+    """
+    return inspect.getfullargspec(func)[0]
+
+
+def rename_args(func: tp.Callable, prefix: str, first: str) -> tp.List[str]:
+    """Reformat arguments for the characteristic function.
+
+    Parameters
+    ----------
+    func
+    prefix
+    first
+
+    Returns
+    -------
+
+    """
+    names = get_arg_names(func)
+    return [first] + [prefix + name for name in names[1:]]
 
 
 def get_symbol(name: str) -> str:
@@ -250,7 +282,7 @@ class ModelBase:
         """
         return self._order
 
-    def set_param(self, **kwargs) -> None:
+    def set_value(self, **kwargs) -> None:
         """Set the parameter values.
 
         Parameters
@@ -270,7 +302,7 @@ class ModelBase:
     def get_param(self, name: str) -> Parameter:
         """Get the parameters."""
         if not hasattr(self._recipe, name):
-            raise ValueError("No such parameter call '{}' in the recipe.".format(name))
+            raise KeyError("No such parameter call '{}' in the recipe.".format(name))
         return getattr(self._recipe, name)
 
     def set_bound(self, **kwargs) -> None:
@@ -311,7 +343,7 @@ class ModelBase:
         """Check the parameters."""
         for param in params:
             if not hasattr(self._recipe, param):
-                raise ValueError("There is no parameter called '{}'".format(param))
+                raise KeyError("There is no parameter called '{}'".format(param))
 
     def _create_recipe(self) -> md.MyRecipe:
         """Place holder for the method to create the recipe."""
@@ -569,20 +601,19 @@ class MultiPhaseModel(ModelBase):
         super(MultiPhaseModel, self).__init__(recipe)
 
     def _create_recipe(self) -> md.MyRecipe:
-        n = len(self._structures)
         pgs = []
         for name, structure in self._structures.items():
             pg = md.PDFGenerator(name)
             pg.setStructure(structure, periodic=True)
             pgs.append(pg)
         fc = md.MyContribution(self.__class__.__name__)
-        fc.xname = "x"
+        fc.xname = "r"
         for pg in pgs:
             fc.addProfileGenerator(pg)
         for name, sf in self._characteristics.items():
-            fc.registerFunction(sf, name)
-        if self._equation:
-            fc.setEquation(self._equation)
+            argnames = rename_args(sf, "{}_".format(name), fc.xname)
+            fc.registerFunction(sf, name, argnames)
+        fc.setEquation(self._equation)
         fr = md.MyRecipe()
         fr.clearFitHooks()
         fr.addContribution(fc)
