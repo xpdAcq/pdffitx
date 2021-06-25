@@ -4,6 +4,7 @@ import typing as tp
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+import numpy as np
 import xarray as xr
 from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.fitbase.fitresults import initializeRecipe
@@ -129,6 +130,7 @@ class ModelBase:
         self._verbose: int = 1
         self._order: tp.List[tp.Union[str, tp.Iterable[str]]] = []
         self._options: dict = {}
+        self._fit_state = None
 
     def parallel(self, ncpu: int) -> None:
         """Parallel computing.
@@ -383,6 +385,19 @@ class ModelBase:
             print("No parameters to refine.")
             return
         md.optimize(self._recipe, self._order, validate=False, verbose=self._verbose, **self._options)
+        rw = self.get_rw()
+        if self._verbose > 0:
+            print("Optimization result: Rw = {:.6f}.".format(rw))
+
+    def get_rw(self) -> float:
+        """Calculate Rw value from profile.
+
+        -------
+        Rw value.
+        """
+        profile = self.get_profile()
+        y, ycalc = profile.y, profile.ycalc
+        return np.sqrt(np.sum((y - ycalc) ** 2) / np.sum(ycalc ** 2))
 
     def update(self) -> None:
         """Update the result."""
