@@ -5,13 +5,12 @@ import pyFAI
 import pytest
 from diffpy.pdfgetx import PDFConfig, PDFGetter
 from diffpy.structure import loadStructure
-from pdfstream.io import load_img, load_array
 from pyobjcryst import loadCrystal
 from pyobjcryst.molecule import Molecule
 
 from pdffitx.files import NI_PONI_FILE, NI_GR_FILE, NI_CHI_FILE, NI_FGR_FILE, NI_IMG_FILE, MASK_FILE, \
     KAPTON_IMG_FILE, BLACK_IMG_FILE, WHITE_IMG_FILE, ZRP_CIF_FILE, NI_CIF_FILE
-from pdffitx.io import load_parser
+from pdffitx.io import load_parser, load_img, load_array
 from pdffitx.modeling.adding import initialize
 # data file
 from pdffitx.modeling.creating import create

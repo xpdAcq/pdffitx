@@ -116,15 +116,6 @@ class ModelBase:
         profile = self.get_profile()
         profile.setCalculationRange(xmin=start, xmax=end, dx=step)
 
-    def get_xrange(self) -> tp.List:
-        """Set fitting range.
-
-        Returns
-        -------
-        A list of start, end, step.
-        """
-        return self._xrange
-
     def set_verbose(self, level: int) -> None:
         """Set verbose level.
 
@@ -343,7 +334,7 @@ class ModelBase:
         -------
         None
         """
-        if self._order:
+        if not self._order:
             print("No parameters to refine.")
             return
         md.optimize(self._recipe, self._order, validate=False, verbose=self._verbose, **self._options)
@@ -359,18 +350,23 @@ class ModelBase:
     def get_result(self) -> dict:
         """Get the result in a dictionary"""
         dct = dict()
-        n = len(varnames)
+        fr = self._fit_result
+        n = len(fr.varnames)
         for i in range(n):
-            dct[varnames[i]] = varvals[i]
+            dct[fr.varnames[i]] = fr.varvals[i]
         n = len(fr.fixednames)
         for i in range(n):
             dct[fr.fixednames[i]] = fr.fixedvals[i]
         dct["rw"] = self._fit_result.rw
         return dct
 
-    def save(self, filepath: str) -> None:
+    def save(self, directory: str, file_prefix: str) -> None:
         """Save the model parameters. Must update before save."""
-        self._fit_result.saveResults(filepath)
+        directory = pathlib.Path(directory)
+        if not directory.is_dir():
+            directory.mkdir(parents=True)
+        path = directory.joinpath("{}.txt".format(file_prefix))
+        self._fit_result.saveResults(path)
 
     def load(self, filepath: str) -> None:
         """Load the parameters for the model.
@@ -435,6 +431,7 @@ class ModelBase:
 
     def save_all(self, directory: str, file_prefix: str) -> None:
         """Export the results, fits and structures in a directory."""
+        self.save(directory, file_prefix)
         self.save_result(directory, file_prefix)
         self.save_fits(directory, file_prefix)
 
@@ -446,13 +443,13 @@ class ModelBase:
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
-    def __init__(self, equation: str, structures: tp.Dict[str, Crystal] = None,
+    def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
                  characteristics: tp.Dict[str, tp.Callable] = None):
         if structures is None:
             structures = {}
         if characteristics is None:
             characteristics = {}
-        self._equation = equation
+        self._equation = equation if equation else ""
         self._structures = structures
         self._characteristics = characteristics
         recipe = self._create_recipe()
@@ -471,7 +468,8 @@ class MultiPhaseModel(ModelBase):
             fc.addProfileGenerator(pg)
         for name, sf in self._characteristics.items():
             fc.registerFunction(sf, name)
-        fc.setEquation(self._equation)
+        if self._equation:
+            fc.setEquation(self._equation)
         fr = md.MyRecipe()
         fr.clearFitHooks()
         fr.addContribution(fc)
@@ -486,29 +484,15 @@ class MultiPhaseModel(ModelBase):
 
     def get_equation(self) -> str:
         """Get the equation."""
-        return self._equation
-
-    def add_structure(self, name: str, structure: Crystal) -> None:
-        """Add a new structure."""
-        if name in self._structures:
-            raise KeyError("'{}' has been already added.".format(name))
-        self._structures[name] = structure
-        fc = self.get_contribution()
-        pg = md.PDFGenerator(name)
-        pg.setStructure(structure, periodic=True)
-        fc.addProfileGenerator(pg)
+        return self.get_contribution().getEquation()
 
     def get_structures(self) -> tp.Dict[str, Crystal]:
         """Get the structures in a directory."""
         return self._structures
 
-    def add_characteristic(self, name: str, characteristic: tp.Callable) -> None:
-        """Add a new characteristic."""
-        if name in self._characteristics:
-            raise KeyError("'{}' has been already added.".format(name))
-        self._characteristics[name] = characteristic
-        fc = self.get_contribution()
-        fc.registerFunction(name, characteristic)
+    def get_characteristics(self) -> tp.Dict[str, tp.Callable]:
+        """Get all characteristic functions."""
+        return self._characteristics
 
     def save_all(self, directory: str, file_prefix: str) -> None:
         """Export the results, fits and structures in a directory."""
