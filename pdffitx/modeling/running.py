@@ -208,11 +208,14 @@ def optimize(recipe: MyRecipe, tags: tp.List[tp.Union[str, tp.Iterable[str]]],
     if validate:
         recipe.fix("all")
         list(free_one_by_one(recipe, tags))
+    n = len(tags)
+    count = 1
     recipe.fix("all")
     for tag_lst in free_one_by_one(recipe, tags):
         if verbose > 0:
-            print("Free {} ...".format(", ".join(tag_lst)))
+            print("Round {} / {}: Free {} ...".format(count, n, ", ".join(tag_lst)))
         fit(recipe, verbose=verbose, **kwargs)
+        count += 1
     return
 
 

@@ -22,6 +22,10 @@ class MyContribution(FitContribution):
     def xname(self) -> str:
         return self._xname
 
+    @xname.setter
+    def xname(self, value: str):
+        self._xname = value
+
 
 class MyRecipe(FitRecipe):
     """The FitRecipe interface with augmented features."""

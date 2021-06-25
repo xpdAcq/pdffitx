@@ -1,8 +1,9 @@
 """The input / output functions related to file system."""
-
+from diffpy.srfit.fitbase import Profile
 from diffpy.structure import loadStructure
 from pyobjcryst import loadCrystal
 
+from pdffitx import modeling as md
 from pdffitx.modeling.fitobjs import MyParser
 
 load_crystal = loadCrystal
@@ -28,3 +29,11 @@ def load_parser(filename: str, meta: dict) -> MyParser:
     parser = MyParser()
     parser.parseFile(filename, meta=meta)
     return parser
+
+
+def load_profile(filename: str, metadata: dict = None) -> Profile:
+    profile = Profile()
+    parser = md.MyParser()
+    parser.parseFile(filename, metadata)
+    profile.loadParsedData(parser)
+    return profile

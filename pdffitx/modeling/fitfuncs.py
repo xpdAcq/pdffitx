@@ -100,8 +100,9 @@ def make_contribution(conconfig: ConConfig, xname: str = "r") -> MyContribution:
     contribution = MyContribution(conconfig.name)
 
     fit_range = conconfig.fit_range
-    profile = make_profile(conconfig.parser, fit_range)
-    contribution.setProfile(profile, xname=xname)
+    if contribution.profile is not None:
+        profile = make_profile(conconfig.parser, fit_range)
+        contribution.setProfile(profile, xname=xname)
 
     for genconfig in conconfig.genconfigs:
         generator = make_generator(genconfig)
