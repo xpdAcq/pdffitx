@@ -1,9 +1,11 @@
 """The functions used in the command line interface. The input and output are all files."""
-import matplotlib.pyplot as plt
-import pdfstream.io as pio
-import pdfstream.transformation.io as tio
+import sys
 import typing as tp
 from pathlib import PurePath
+
+import fire
+import matplotlib.pyplot as plt
+import pdfstream.io as pio
 from pkg_resources import resource_filename
 
 import pdffitx.calibration as calib
@@ -92,6 +94,11 @@ def instrucalib(
     show : bool
         If True, show figures.
     """
+    try:
+        import pdfstream.transformation.io as tio
+    except ImportError as e:
+        print(str(e))
+        sys.exit(1)
     if cfg_file is None:
         cfg_file = resource_filename('pdffitx', 'data/Ni_cfg_file.cfg')
     if stru_file is None:
@@ -113,3 +120,9 @@ def instrucalib(
     if show:
         plt.show()
     return
+
+
+def main():
+    """The CLI entry point. Run google-fire on the name - function mapping."""
+    commands = {"calib": instrucalib}
+    fire.Fire(commands)
