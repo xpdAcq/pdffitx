@@ -16,8 +16,8 @@ def test_MultiPhaseModel_1(tmpdir):
     # create a model
     Ni = io.load_crystal(files.NI_CIF_FILE)
 
-    def f(x, psize):
-        return F.sphericalCF(x, psize)
+    def f(r, psize):
+        return F.sphericalCF(r, psize)
 
     model = mod.MultiPhaseModel("f * Ni", {"Ni": Ni}, {"f": f})
 
@@ -58,9 +58,21 @@ def test_MultiPhaseModel_1(tmpdir):
     model.set_xrange(2., 12., 0.1)
     model.set_options(ftol=1e-2)
     assert model.get_options() == {"ftol": 1e-2}
-    model.set_order("Ni_scale", "Ni_a", ["Ni_adp", "Ni_delta"])
-    assert model.get_order() == ["Ni_scale", "Ni_a", ["Ni_adp", "Ni_delta"]]
+    order = [["Ni_scale", "f_psize"], "Ni_a", ["Ni_adp", "Ni_delta"]]
+    model.set_order(*order)
+    assert model.get_order() == order
     model.optimize()
+
+    # check the expected values
+    expected = {
+        "f_psize": (198., 201.),
+        "Ni_scale": (0.36, 0.38),
+        "Ni_delta2": (1.2, 1.3),
+        "Ni_a": (3.52, 3.53),
+        "Ni_Ni0_Biso": (0.3, 0.6)
+    }
+    for name, bound in expected.items():
+        assert bound[0] < model.get_param(name).getValue() < bound[1]
 
     # output the results
     model.update()

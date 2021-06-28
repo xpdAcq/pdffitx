@@ -607,7 +607,7 @@ class MultiPhaseModel(ModelBase):
             pg.setStructure(structure, periodic=True)
             pgs.append(pg)
         fc = md.MyContribution(self.__class__.__name__)
-        fc.xname = "r"
+        fc.setProfile(Profile())
         for pg in pgs:
             fc.addProfileGenerator(pg)
         for name, sf in self._characteristics.items():
