@@ -589,7 +589,7 @@ class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
     def __init__(self, equation: str, structures: tp.Dict[str, Crystal] = None,
-                 characteristics: tp.Dict[str, tp.Callable] = None):
+                 characteristics: tp.Dict[str, tp.Callable] = None, **kwargs):
         if structures is None:
             structures = {}
         if characteristics is None:
@@ -597,6 +597,7 @@ class MultiPhaseModel(ModelBase):
         self._equation = equation
         self._structures = structures
         self._characteristics = characteristics
+        self._init_mode = kwargs
         recipe = self._create_recipe()
         super(MultiPhaseModel, self).__init__(recipe)
 
@@ -617,7 +618,7 @@ class MultiPhaseModel(ModelBase):
         fr = md.MyRecipe()
         fr.clearFitHooks()
         fr.addContribution(fc)
-        md.initialize(fr)
+        md.initialize(fr, **self._init_mode)
         return fr
 
     def get_equation(self) -> str:
