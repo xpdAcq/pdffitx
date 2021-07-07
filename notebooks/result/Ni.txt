@@ -1,0 +1,28 @@
+Results written: Wed Jul  7 12:01:40 2021
+produced by sst
+
+Some quantities invalid due to missing profile uncertainty
+Overall (Chi2 and Reduced Chi2 invalid)
+------------------------------------------------------------------------------
+Residual       10.54251209
+Contributions  10.54251209
+Restraints     0.00000000
+Chi2           10.54251209
+Reduced Chi2   0.01058485
+Rw             0.04797354
+
+Variables (Uncertainties invalid)
+------------------------------------------------------------------------------
+Ni_Ni0_Biso   4.38598679e-01 +/- 1.67809140e-02
+Ni_a          3.52406249e+00 +/- 7.18633638e-04
+Ni_delta2     1.58803884e+00 +/- 5.06792654e-01
+Ni_scale      3.70581385e-01 +/- 1.71607497e-02
+sphere_psize  1.17610207e+02 +/- 5.21671016e+01
+
+Variable Correlations greater than 25% (Correlations invalid)
+------------------------------------------------------------------------------
+corr(sphere_psize, Ni_scale)      -0.8767
+corr(sphere_psize, Ni_delta2)     0.5730
+corr(Ni_scale, Ni_delta2)         -0.5596
+corr(Ni_delta2, Ni_Ni0_Biso)      0.4733
+corr(sphere_psize, Ni_Ni0_Biso)   0.4022
