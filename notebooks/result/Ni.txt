@@ -1,28 +1,64 @@
-Results written: Wed Jul  7 12:01:40 2021
+Results written: Thu Jul  8 17:05:32 2021
 produced by sst
 
 Some quantities invalid due to missing profile uncertainty
 Overall (Chi2 and Reduced Chi2 invalid)
 ------------------------------------------------------------------------------
-Residual       10.54251209
-Contributions  10.54251209
+Residual       9.50072840
+Contributions  9.50072840
 Restraints     0.00000000
-Chi2           10.54251209
-Reduced Chi2   0.01058485
-Rw             0.04797354
+Chi2           9.50072840
+Reduced Chi2   0.00958701
+Rw             0.04554158
 
 Variables (Uncertainties invalid)
 ------------------------------------------------------------------------------
-Ni_Ni0_Biso   4.38598679e-01 +/- 1.67809140e-02
-Ni_a          3.52406249e+00 +/- 7.18633638e-04
-Ni_delta2     1.58803884e+00 +/- 5.06792654e-01
-Ni_scale      3.70581385e-01 +/- 1.71607497e-02
-sphere_psize  1.17610207e+02 +/- 5.21671016e+01
+Ni1_Ni0_Biso   4.67321433e-01 +/- 2.50936906e-01
+Ni1_a          3.52556224e+00 +/- 1.02826932e-02
+Ni1_delta2     1.66404818e+00 +/- 2.43472005e+00
+Ni1_scale      3.21479482e-01 +/- 4.72211935e-01
+Ni2_Ni0_Biso   2.13697313e-01 +/- 1.16874130e+00
+Ni2_a          3.51708691e+00 +/- 3.09272910e-02
+Ni2_delta2     8.89167433e-02 +/- 2.70442075e+01
+Ni2_scale      3.87969737e-02 +/- 4.69105617e-01
+sphere1_psize  1.12584008e+03 +/- 2.44329851e+04
+sphere2_psize  3.10851897e+02 +/- 1.13950279e+04
 
 Variable Correlations greater than 25% (Correlations invalid)
 ------------------------------------------------------------------------------
-corr(sphere_psize, Ni_scale)      -0.8767
-corr(sphere_psize, Ni_delta2)     0.5730
-corr(Ni_scale, Ni_delta2)         -0.5596
-corr(Ni_delta2, Ni_Ni0_Biso)      0.4733
-corr(sphere_psize, Ni_Ni0_Biso)   0.4022
+corr(Ni1_scale, Ni2_scale)           -0.9989
+corr(Ni1_Ni0_Biso, Ni2_scale)        0.9833
+corr(Ni1_scale, Ni1_Ni0_Biso)        -0.9814
+corr(Ni1_a, Ni2_Ni0_Biso)            0.9758
+corr(Ni2_scale, Ni2_Ni0_Biso)        0.9743
+corr(Ni1_scale, Ni2_Ni0_Biso)        -0.9682
+corr(Ni1_a, Ni2_scale)               0.9655
+corr(Ni1_Ni0_Biso, Ni2_a)            0.9642
+corr(Ni1_scale, Ni1_a)               -0.9613
+corr(Ni2_scale, Ni2_a)               0.9509
+corr(Ni1_scale, Ni2_a)               -0.9469
+corr(Ni1_Ni0_Biso, Ni2_Ni0_Biso)     0.9462
+corr(Ni1_a, Ni1_Ni0_Biso)            0.9416
+corr(Ni2_a, Ni2_Ni0_Biso)            0.9251
+corr(sphere1_psize, sphere2_psize)   -0.9238
+corr(Ni1_a, Ni2_a)                   0.8706
+corr(Ni1_delta2, Ni2_delta2)         -0.5898
+corr(sphere1_psize, Ni1_delta2)      0.5674
+corr(sphere2_psize, Ni2_delta2)      0.5576
+corr(Ni1_scale, Ni1_delta2)          -0.5370
+corr(Ni1_delta2, Ni1_Ni0_Biso)       0.5291
+corr(Ni1_delta2, Ni2_scale)          0.5136
+corr(Ni2_delta2, Ni2_Ni0_Biso)       0.4752
+corr(Ni1_delta2, Ni2_a)              0.4728
+corr(sphere1_psize, Ni2_delta2)      -0.4692
+corr(Ni1_delta2, Ni1_a)              0.4296
+corr(Ni1_a, Ni2_delta2)              0.4180
+corr(Ni1_delta2, Ni2_Ni0_Biso)       0.3909
+corr(sphere2_psize, Ni1_delta2)      -0.3802
+corr(Ni2_delta2, Ni2_a)              0.3593
+corr(Ni2_scale, Ni2_delta2)          0.3389
+corr(Ni1_Ni0_Biso, Ni2_delta2)       0.3280
+corr(Ni1_scale, Ni2_delta2)          -0.3145
+corr(sphere1_psize, Ni1_scale)       -0.3055
+corr(sphere1_psize, Ni1_Ni0_Biso)    0.2743
+corr(sphere1_psize, Ni2_scale)       0.2741
