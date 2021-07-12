@@ -584,6 +584,15 @@ class ModelBase:
         fits = self.export_fits()
         plot_fits(fits, **kwargs)
 
+    def get_recipe(self) -> md.MyRecipe:
+        """Get the recipe.
+
+        Returns
+        -------
+        The recipe in the model.
+        """
+        return self._recipe
+
 
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
