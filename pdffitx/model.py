@@ -127,9 +127,12 @@ def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwarg
 
 def plot_fits_along_dim(
     fits: xr.Dataset, dim: str, num_row: int = 1, offset: float = 0.,
-    figure_config: dict = None, grid_config: dict = None, plot_config: dict = None
+    figure_config: dict = None, grid_config: dict = None, plot_config: dict = None,
+    subplot_config: dict = None
 ) -> tp.List[plt.Axes]:
     """Plot the fitted curves in multiple panels."""
+    if subplot_config is None:
+        subplot_config = {}
     n = len(fits[dim])
     num_col = math.ceil(n / num_row)
     if grid_config is None:
@@ -146,7 +149,7 @@ def plot_fits_along_dim(
     axes = []
     for i, grid in zip(fits[dim], grids):
         fit = fits.isel({dim: i})
-        ax = fig.add_subplot(grid)
+        ax = fig.add_subplot(grid, **subplot_config)
         axes.append(ax)
         plot_fits(fit, offset, ax=ax, **plot_config)
     return axes
