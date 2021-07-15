@@ -4,6 +4,7 @@ import diffpy.srfit.pdf.characteristicfunctions as F
 import matplotlib.pyplot as plt
 import pytest
 import xarray as xr
+import numpy as np
 
 import pdffitx.files as files
 import pdffitx.io as io
@@ -116,5 +117,6 @@ def test_MultiPhaseModel_3(tmpdir):
     """Test the method"""
     Ni = io.load_crystal(files.NI_CIF_FILE)
     model = mod.MultiPhaseModel("G", {"G": Ni})
-    arr = model.calc_phase("G")
+    x = np.arange(0, 5, 0.1)
+    arr = model.calc_phase(x, "G")
     assert isinstance(arr, xr.DataArray)

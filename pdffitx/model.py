@@ -365,11 +365,13 @@ class ModelBase:
         """Get the generators in a dictionary."""
         return self.get_contribution().generators
 
-    def calc_phase(self, name: str) -> xr.DataArray:
+    def calc_phase(self, x: np.array, name: str) -> xr.DataArray:
         """Calculate the data from a generator.
 
         Parameters
         ----------
+        x :
+            An array of x.
         name :
             The name of a generator.
 
@@ -381,10 +383,10 @@ class ModelBase:
         p = self.get_profile()
         if name not in gs:
             raise KeyError("There are no generators named '{}'.".format(name))
-        y = gs[name](p.x)
-        arr = xr.DataArray(y, coords={"x": p.x}, dims=["x"])
-        arr["y"].attrs["standard_name"] = "G"
-        arr["y"].attrs["units"] = r"Å$^{-2}$"
+        y = gs[name](x)
+        arr = xr.DataArray(y, coords={"x": x}, dims=["x"])
+        arr.attrs["standard_name"] = "G"
+        arr.attrs["units"] = r"Å$^{-2}$"
         arr["x"].attrs["standard_name"] = "r"
         arr["x"].attrs["units"] = "Å"
         return arr
