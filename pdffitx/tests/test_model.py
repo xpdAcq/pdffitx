@@ -113,10 +113,29 @@ def test_MultiPhaseModel_2(tmpdir):
         model.set_value(b=1)
 
 
-def test_MultiPhaseModel_3(tmpdir):
-    """Test the method"""
+def test_MultiPhaseModel_3():
+    """Test the calc_phase method"""
     Ni = io.load_crystal(files.NI_CIF_FILE)
     model = mod.MultiPhaseModel("G", {"G": Ni})
     x = np.arange(0, 5, 0.1)
     arr = model.calc_phase(x, "G")
     assert isinstance(arr, xr.DataArray)
+
+
+def test_MultiPhaseModel_4():
+    """Test the eval method"""
+    model = mod.MultiPhaseModel("a * x")
+    model.set_value(a=1)
+    x = np.linspace(0, 5, 6)
+    y = np.zeros(6)
+    model.set_data(x, y)
+    model.eval()
+    assert np.array_equal(model.get_profile().ycalc, x)
+
+
+def test_MultiPhaseModel_5():
+    """Test metadata related method"""
+    model = mod.MultiPhaseModel("x")
+    assert model.get_metadata() == {}
+    model.set_metadata({"a": 1})
+    assert model.get_metadata() == {"a": 1}

@@ -614,6 +614,43 @@ class ModelBase:
         """
         return self._recipe.getNames()
 
+    def set_data(self, x: np.array, y: np.array, dy: np.array = None) -> None:
+        """Set the data in the profile.
+
+        Args:
+            x (np.array): Independent variable.
+            y (np.array): Dependent variable.
+            dy (np.array, optional): Standard deviation of the dependent variable. Defaults to None.
+        """
+        p = self.get_profile()
+        p.setObservedProfile(x, y, dy)
+        return
+
+    def eval(self) -> None:
+        """Evaluate the equation. Update profile.ycalc.
+        """
+        fc = self.get_contribution()
+        fc.evaluate()
+        return
+
+    def set_metadata(self, metadata: tp.Dict[str, tp.Any]) -> None:
+        """Set metadata in the profile.
+
+        Args:
+            metadata (tp.Dict[str, tp.Any]): A dictionary of the metadata.
+        """
+        p = self.get_profile()
+        p.meta = metadata
+        return
+
+    def get_metadata(self) -> dict:
+        """Get metadata in the profile.
+
+        Returns:
+            dict: A dictionary of the metadata itself. It can be updated.
+        """
+        return self.get_profile().meta
+
 
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
