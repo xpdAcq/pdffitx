@@ -110,3 +110,11 @@ def test_MultiPhaseModel_2(tmpdir):
         model.get_param("r")
     with pytest.raises(KeyError):
         model.set_value(b=1)
+
+
+def test_MultiPhaseModel_3(tmpdir):
+    """Test the method"""
+    Ni = io.load_crystal(files.NI_CIF_FILE)
+    model = mod.MultiPhaseModel("G", {"G": Ni})
+    arr = model.calc_phase("G")
+    assert isinstance(arr, xr.DataArray)

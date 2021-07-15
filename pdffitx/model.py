@@ -382,7 +382,7 @@ class ModelBase:
         if name not in gs:
             raise KeyError("There are no generators named '{}'.".format(name))
         y = gs[name](p.x)
-        arr = xr.DataArray(y, coords={"x": x}, dims=["x"])
+        arr = xr.DataArray(y, coords={"x": p.x}, dims=["x"])
         arr["y"].attrs["standard_name"] = "G"
         arr["y"].attrs["units"] = r"Å$^{-2}$"
         arr["x"].attrs["standard_name"] = "r"
@@ -595,6 +595,22 @@ class ModelBase:
         The recipe in the model.
         """
         return self._recipe
+
+    def get_names(self) -> tp.List[str]:
+        """Get the names of the free parameters.
+
+        Returns:
+            tp.List[str]: A list of names.
+        """
+        return self._recipe.getNames()
+
+    def get_values(self) -> tp.List[str]:
+        """Get the values of the free parameters.
+
+        Returns:
+            tp.List[str]: A list of values.
+        """
+        return self._recipe.getNames()
 
 
 class MultiPhaseModel(ModelBase):
