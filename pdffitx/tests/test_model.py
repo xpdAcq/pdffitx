@@ -139,3 +139,10 @@ def test_MultiPhaseModel_5():
     assert model.get_metadata() == {}
     model.set_metadata({"a": 1})
     assert model.get_metadata() == {"a": 1}
+
+
+def test_MultiPhaseModel_6():
+    """Test set equation method"""
+    model = mod.MultiPhaseModel()
+    model.set_equation("a * x")
+    assert model.get_equation() == "(a * x)"

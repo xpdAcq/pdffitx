@@ -655,7 +655,7 @@ class ModelBase:
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
-    def __init__(self, equation: str, structures: tp.Dict[str, Crystal] = None,
+    def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
                  characteristics: tp.Dict[str, tp.Callable] = None, **kwargs):
         if structures is None:
             structures = {}
@@ -681,7 +681,8 @@ class MultiPhaseModel(ModelBase):
         for name, sf in self._characteristics.items():
             argnames = rename_args(sf, "{}_".format(name), fc.xname)
             fc.registerFunction(sf, name, argnames)
-        fc.setEquation(self._equation)
+        if self._equation:
+            fc.setEquation(self._equation)
         fr = md.MyRecipe()
         fr.clearFitHooks()
         fr.addContribution(fc)
@@ -691,6 +692,13 @@ class MultiPhaseModel(ModelBase):
     def get_equation(self) -> str:
         """Get the equation."""
         return self.get_contribution().getEquation()
+
+    def set_equation(self, equation: str, namespace: dict = None) -> None:
+        if namespace is None:
+            namespace = {}
+        self._equation = equation
+        fc = self.get_contribution()
+        return fc.setEquation(equation, namespace)
 
     def get_structures(self) -> tp.Dict[str, Crystal]:
         """Get the structures in a directory."""
