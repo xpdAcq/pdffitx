@@ -118,7 +118,8 @@ def make_contribution(conconfig: ConConfig, xname: str = "r") -> MyContribution:
         contribution.registerFunction(func_type, name, argnames)
 
     contribution.setEquation(conconfig.eq)
-    contribution.setResidualEquation(conconfig.res_eq)
+    if contribution.profile is not None:
+        contribution.setResidualEquation(conconfig.res_eq)
 
     return contribution
 

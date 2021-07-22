@@ -7,16 +7,20 @@ from pdffitx.modeling.adding import initialize
     "scale,delta,lat,adp,xyz,params,expect",
     [
         (
-            True, None, None, None, None, None,
-            {"G0_scale"}
+                False, None, "e", None, None, None,
+                {"G0_zoom"}
         ),
         (
-            False, "1", None, None, None, None,
-            {"G0_delta1"}
+                True, None, None, None, None, None,
+                {"G0_scale"}
         ),
         (
-            False, "2", None, None, None, None,
-            {"G0_delta2"}
+                False, "1", None, None, None, None,
+                {"G0_delta1"}
+        ),
+        (
+                False, "2", None, None, None, None,
+                {"G0_delta2"}
         ),
         (
             False, None, "s", None, None, None,
@@ -47,8 +51,8 @@ from pdffitx.modeling.adding import initialize
             {"G0_Ni0_x", "G0_Ni0_y", "G0_Ni0_z"}
         ),
         (
-            False, None, None, None, None, "a",
-            {"A", "f0_psize"}
+                False, None, None, None, None, "a",
+                {"A", "r", "f0_psize"}
         ),
         (
             False, None, None, None, None, ["A"],

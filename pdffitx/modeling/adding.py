@@ -49,7 +49,8 @@ def initialize(
 
     lat :
         If "s", constrain the lattice parameters by space group and add the independent variables.
-        If "a", add all the lattice paramters.
+        If "a", add all the lattice parameters.
+        If "e", constrain the lattice to do only isotropic expansion.
         If None, do nothing.
         Default "s".
 
@@ -191,6 +192,18 @@ def add_lat(recipe: MyRecipe, gen: G, lat: tp.Union[str, None]) -> None:
     """Add the lattice parameters of the phase."""
     if not lat:
         return
+    tags = ["lat", gen.name, "{}_lat".format(gen.name)]
+    if lat == "e":
+        v = recipe.newVar(
+            "{}_zoom".format(gen.name),
+            tags=tags,
+            value=1
+        ).boundRange(
+            lb=0.
+        )
+        for par in gen.phase.getLattice():
+            recipe.constrain(par, "{} * {}".format(par.value, v.name))
+        return
     if lat == "s":
         pars = gen.phase.sgpars.latpars
     elif lat == "a":
@@ -201,7 +214,7 @@ def add_lat(recipe: MyRecipe, gen: G, lat: tp.Union[str, None]) -> None:
         recipe.addVar(
             par,
             name="{}_{}".format(gen.name, par.name),
-            tags=["lat", gen.name, "{}_lat".format(gen.name)]
+            tags=tags
         ).boundRange(
             lb=0.
         )

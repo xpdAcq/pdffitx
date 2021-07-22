@@ -85,7 +85,8 @@ def functions():
 
 @pytest.fixture
 def blank_recipe(data, structures, functions):
-    return create("test", data, (2., 7., 0.1), "f0 * G0 + A * sin(r)", functions, structures)
+    recipe = create("test", data, (2., 7., 0.1), "f0 * G0 + A * sin(r)", functions, structures)
+    return recipe
 
 
 @pytest.fixture
