@@ -606,6 +606,12 @@ class ModelBase:
         """
         return self._recipe.getNames()
 
+    def free_and_get_names(self) -> tp.List[str]:
+        self._recipe.free("all")
+        names = self._recipe.getNames()
+        self._recipe.fix("all")
+        return names
+
     def get_values(self) -> tp.List[str]:
         """Get the values of the free parameters.
 
@@ -613,6 +619,12 @@ class ModelBase:
             tp.List[str]: A list of values.
         """
         return self._recipe.getNames()
+
+    def free_and_get_values(self) -> tp.List[str]:
+        self._recipe.free("all")
+        values = self._recipe.getValues()
+        self._recipe.fix("all")
+        return values
 
     def set_data(self, x: np.array, y: np.array, dy: np.array = None) -> None:
         """Set the data in the profile.
