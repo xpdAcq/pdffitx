@@ -265,6 +265,9 @@ class ModelBase:
         self._check_order(order)
         self._order = order
 
+    def set_order_lst(self, order_lst: tp.List[tp.Union[str, tp.Iterable[str]]]) -> None:
+        return self.set_order(*order_lst)
+
     def _check_order(self, order: tp.Any) -> None:
         """Check the order."""
         tags = set(self._recipe._tagmanager.alltags())
@@ -286,7 +289,7 @@ class ModelBase:
         """
         return self._order
 
-    def set_value(self, **kwargs) -> None:
+    def set_value(self, values: dict = None, **kwargs) -> None:
         """Set the parameter values.
 
         Parameters
@@ -298,6 +301,8 @@ class ModelBase:
         -------
         None
         """
+        if values is not None:
+            kwargs.update(values)
         self._check_params(kwargs.keys())
         for name, value in kwargs.items():
             var: Parameter = getattr(self._recipe, name)
