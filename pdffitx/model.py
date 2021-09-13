@@ -653,7 +653,10 @@ class ModelBase:
 
 
 class MultiPhaseModel(ModelBase):
-    """The model for multi-phase fitting of PDFs."""
+    """The model for multi-phase fitting of PDFs. There are difference ways to initialize the recipe.
+    The details are shown below.
+    {}
+    """
 
     def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
                  molecules: tp.Dict[str, Molecule] = None,
@@ -735,3 +738,6 @@ class MultiPhaseModel(ModelBase):
             path = directory.joinpath("{}_{}.cif".format(file_prefix, name))
             with path.open("w") as f:
                 structure.CIFOutput(f)
+
+
+MultiPhaseModel.__doc__ = MultiPhaseModel.__doc__.format(md.initialize.__doc__)
