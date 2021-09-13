@@ -659,8 +659,8 @@ class MultiPhaseModel(ModelBase):
     """
 
     def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
-                 molecules: tp.Dict[str, Molecule] = None,
-                 characteristics: tp.Dict[str, tp.Callable] = None, init_mode: dict = None):
+                 characteristics: tp.Dict[str, tp.Callable] = None, init_mode: dict = None,
+                 molecules: tp.Dict[str, Molecule] = None):
         if structures is None:
             structures = {}
         if molecules is None:
