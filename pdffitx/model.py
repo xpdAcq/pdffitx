@@ -381,7 +381,6 @@ class ModelBase:
         A xarray.DataArray of calculated y with x as the coordinate.
         """
         gs = self.get_generators()
-        p = self.get_profile()
         if name not in gs:
             raise KeyError("There are no generators named '{}'.".format(name))
         y = gs[name](x)
