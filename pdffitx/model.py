@@ -12,6 +12,7 @@ from diffpy.srfit.fitbase.fitresults import initializeRecipe
 from diffpy.srfit.fitbase.parameter import Parameter
 from diffpy.srfit.fitbase.profile import Profile
 from pyobjcryst.crystal import Crystal
+from pyobjcryst.molecule import Molecule
 
 import pdffitx.modeling as md
 
@@ -656,13 +657,17 @@ class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs."""
 
     def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
+                 molecules: tp.Dict[str, Molecule] = None,
                  characteristics: tp.Dict[str, tp.Callable] = None, init_mode: dict = None):
         if structures is None:
             structures = {}
+        if molecules is None:
+            molecules = {}
         if characteristics is None:
             characteristics = {}
         self._equation = equation
         self._structures = structures
+        self._molecules = molecules
         self._characteristics = characteristics
         self._init_mode = init_mode if init_mode else {}
         recipe = self._create_recipe()
@@ -674,6 +679,10 @@ class MultiPhaseModel(ModelBase):
             pg = md.PDFGenerator(name)
             pg.setStructure(structure, periodic=True)
             pgs.append(pg)
+        for name, molecule in self._molecules.items():
+            dpg = md.DebyePDFGenerator(name)
+            dpg.setStructure(molecule, periodic=False)
+            pgs.append(dpg)
         fc = md.MyContribution(self.__class__.__name__)
         fc.setProfile(Profile())
         for pg in pgs:
@@ -701,8 +710,12 @@ class MultiPhaseModel(ModelBase):
         return fc.setEquation(equation, namespace)
 
     def get_structures(self) -> tp.Dict[str, Crystal]:
-        """Get the structures in a directory."""
+        """Get the structures in a dictionary."""
         return self._structures
+
+    def get_molecules(self) -> tp.Dict[str, Molecule]:
+        """Get the molecules in a dictionary."""
+        return self._molecules
 
     def get_characteristics(self) -> tp.Dict[str, tp.Callable]:
         """Get all characteristic functions."""
