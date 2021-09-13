@@ -314,7 +314,7 @@ class ModelBase:
             raise KeyError("No such parameter call '{}' in the recipe.".format(name))
         return getattr(self._recipe, name)
 
-    def set_bound(self, **kwargs) -> None:
+    def set_bound(self, bound: dict = None, **kwargs) -> None:
         """Set the bound.
 
         Parameters
@@ -326,12 +326,14 @@ class ModelBase:
         -------
         None
         """
+        if bound is not None:
+            kwargs.update(bound)
         self._check_params(kwargs.keys())
         for name, bound in kwargs.items():
             var: Parameter = getattr(self._recipe, name)
             var.boundRange(*bound)
 
-    def set_rel_bound(self, **kwargs) -> None:
+    def set_rel_bound(self, rel_bound: dict = None, **kwargs) -> None:
         """Set the bound relatively to current value.
 
         Parameters
@@ -343,6 +345,8 @@ class ModelBase:
         -------
         None
         """
+        if rel_bound is not None:
+            kwargs.update(rel_bound)
         self._check_params(kwargs.keys())
         for name, bound in kwargs.items():
             var: Parameter = getattr(self._recipe, name)
