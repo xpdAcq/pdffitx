@@ -197,11 +197,12 @@ def add_lat(recipe: MyRecipe, gen: G, lat: tp.Union[str, None]) -> None:
         v = recipe.newVar(
             "{}_zoom".format(gen.name),
             tags=tags,
-            value=1
+            value=1.
         ).boundRange(
             lb=0.
         )
-        for par in gen.phase.getLattice():
+        lat = gen.phase.getLattice()
+        for par in (lat.a, lat.b, lat.c):
             recipe.constrain(par, "{} * {}".format(par.value, v.name))
         return
     if lat == "s":
