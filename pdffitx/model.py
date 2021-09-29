@@ -509,23 +509,26 @@ class ModelBase:
         ds["rw"].attrs["long_name"] = "$R_w$"
         return ds
 
-    def export_fits(self) -> xr.Dataset:
+    def export_fits(self, include_obs: bool = True) -> xr.Dataset:
         """Export the fits in a dataset."""
         profile = self.get_profile()
-        ds = xr.Dataset(
-            {"y": (["x"], profile.y), "ycalc": (["x"], profile.ycalc), "yobs": (["xobs"], profile.yobs)},
-            {"x": (["x"], profile.x), "xobs": (["xobs"], profile.xobs)}
-        )
+        data = {"y": (["x"], profile.y), "ycalc": (["x"], profile.ycalc)}
+        coords = {"x": (["x"], profile.x)}
+        if include_obs:
+            data["yobs"] = (["xobs"], profile.yobs)
+            coords["xobs"] = (["xobs"], profile.xobs)
+        ds = xr.Dataset(data, coords)
         ds["y"].attrs["standard_name"] = "G"
         ds["y"].attrs["units"] = r"Å$^{-2}$"
         ds["ycalc"].attrs["standard_name"] = "G"
         ds["ycalc"].attrs["units"] = r"Å$^{-2}$"
-        ds["yobs"].attrs["standard_name"] = "G"
-        ds["yobs"].attrs["units"] = r"Å$^{-2}$"
         ds["x"].attrs["standard_name"] = "r"
         ds["x"].attrs["units"] = "Å"
-        ds["xobs"].attrs["standard_name"] = "r"
-        ds["xobs"].attrs["units"] = "Å"
+        if include_obs:
+            ds["yobs"].attrs["standard_name"] = "G"
+            ds["yobs"].attrs["units"] = r"Å$^{-2}$"
+            ds["xobs"].attrs["standard_name"] = "r"
+            ds["xobs"].attrs["units"] = "Å"
         return ds
 
     def save_result(self, directory: str, file_prefix: str) -> None:
@@ -671,6 +674,57 @@ class ModelBase:
             dict: A dictionary of the metadata itself. It can be updated.
         """
         return self.get_profile().meta
+
+    def fit_one_data(
+            self,
+            dataset: xr.Dataset,
+            x: str,
+            y: str,
+            metadata: dict = None,
+            xmin: float = None,
+            xmax: float = None,
+            xstep: float = None
+    ) -> tp.Tuple[xr.Dataset, xr.Dataset]:
+        if metadata is None:
+            metadata = {}
+        self.set_data(dataset[x].values, dataset[y].values, None)
+        self.set_metadata(metadata)
+        self.set_xrange(xmin, xmax, xstep)
+        self.optimize()
+        self.update()
+        res = self.export_result()
+        fits = self.export_fits(include_obs=False)
+        return xr.merge([dataset, res]), xr.merge([dataset, fits])
+
+    def fit_many_data(
+            self,
+            dataset: xr.Dataset,
+            x: str,
+            y: str,
+            metadata: dict = None,
+            xmin: float = None,
+            xmax: float = None,
+            xstep: float = None
+    ):
+        if metadata is None:
+            metadata = {}
+        dims, lens = [], []
+        for d, l in dataset.dims.items():
+            if d != x:
+                dims.append(d)
+                lens.append(l)
+        ress = []
+        fitss = []
+        idxs = np.stack([np.ravel(i) for i in np.indices(lens)]).transpose()
+        for idx in idxs:
+            pos = dict(zip(dims, idx))
+            sel_ds = dataset.isel(pos)
+            res, fits = self.fit_one_data(sel_ds, x, y, metadata, xmin, xmax, xstep)
+            res = res.expand_dims(dims)
+            fits = fits.expand_dims(dims)
+            ress.append(res)
+            fitss.append(fits)
+        return xr.combine_by_coords(ress), xr.combine_by_coords(fitss)
 
 
 class MultiPhaseModel(ModelBase):

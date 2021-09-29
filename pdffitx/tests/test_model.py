@@ -2,9 +2,9 @@ import pathlib
 
 import diffpy.srfit.pdf.characteristicfunctions as F
 import matplotlib.pyplot as plt
+import numpy as np
 import pytest
 import xarray as xr
-import numpy as np
 
 import pdffitx.files as files
 import pdffitx.io as io
@@ -146,3 +146,18 @@ def test_MultiPhaseModel_6():
     model = mod.MultiPhaseModel()
     model.set_equation("a * x")
     assert model.get_equation() == "(a * x)"
+
+
+def test_fit_many_data():
+    """Test the eval method"""
+    model = mod.MultiPhaseModel("a * x")
+    model.set_value(a=1)
+    model.set_order("a")
+    x = np.linspace(0., 1., 5)
+    ds = xr.Dataset(
+        {"ydata": (["cdata", "xdata"], np.stack([2. * x, 3. * x]))},
+        {"xdata": x, "cdata": [0, 1]}
+    )
+    res, fits = model.fit_many_data(ds, "xdata", "ydata")
+    print(res)
+    print(fits)
