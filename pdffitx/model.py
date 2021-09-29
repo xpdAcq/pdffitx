@@ -705,7 +705,8 @@ class ModelBase:
             metadata: dict = None,
             xmin: float = None,
             xmax: float = None,
-            xstep: float = None
+            xstep: float = None,
+            progress_bar: bool = True
     ):
         if metadata is None:
             metadata = {}
@@ -717,7 +718,7 @@ class ModelBase:
         ress = []
         fitss = []
         idxs = np.stack([np.ravel(i) for i in np.indices(lens)]).transpose()
-        idxs_tqdm = tqdm.tqdm(idxs, disable=(self._verbose <= 0))
+        idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
         for idx in idxs_tqdm:
             pos = dict(zip(dims, idx))
             sel_ds = dataset.isel(pos)
