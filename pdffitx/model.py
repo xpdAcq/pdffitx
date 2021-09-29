@@ -6,6 +6,7 @@ import typing as tp
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
+import tqdm
 import xarray as xr
 from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.fitbase.fitresults import initializeRecipe
@@ -716,7 +717,8 @@ class ModelBase:
         ress = []
         fitss = []
         idxs = np.stack([np.ravel(i) for i in np.indices(lens)]).transpose()
-        for idx in idxs:
+        idxs_tqdm = tqdm.tqdm(idxs, disable=(self._verbose <= 0))
+        for idx in idxs_tqdm:
             pos = dict(zip(dims, idx))
             sel_ds = dataset.isel(pos)
             res, fits = self.fit_one_data(sel_ds, x, y, metadata, xmin, xmax, xstep)
