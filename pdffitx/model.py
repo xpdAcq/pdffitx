@@ -430,9 +430,9 @@ class ModelBase:
         """
         if not self._order:
             raise ValueError("No parameters to refine.")
-        md.optimize(self._recipe, self._order, validate=False, verbose=self._verbose, **self._options)
+        md.optimize(self._recipe, self._order, validate=False, verbose=self._verbose - 1, **self._options)
         rw = self.get_rw()
-        if self._verbose > 0:
+        if self._verbose > 1:
             print("Optimization result: Rw = {:.6f}.".format(rw))
 
     def get_rw(self) -> float:
