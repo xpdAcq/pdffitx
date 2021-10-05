@@ -1,6 +1,7 @@
 import inspect
 import math
 import pathlib
+import typing
 import typing as tp
 
 import matplotlib.gridspec as gridspec
@@ -149,7 +150,7 @@ def plot_fits_along_dim(
     fig: plt.Figure = plt.figure(**figure_config)
     grids = gridspec.GridSpec(num_row, num_col, figure=fig, **grid_config)
     axes = []
-    for i, grid in zip(fits[dim], grids):
+    for i, grid in zip(range(len(fits[dim])), grids):
         fit = fits.isel({dim: i})
         ax = fig.add_subplot(grid, **subplot_config)
         axes.append(ax)
@@ -693,9 +694,10 @@ class ModelBase:
         self.set_xrange(xmin, xmax, xstep)
         self.optimize()
         self.update()
+        sel_ds = dataset.drop_vars([x, y])
         res = self.export_result()
-        fits = self.export_fits(include_obs=False)
-        return xr.merge([dataset, res]), xr.merge([dataset, fits])
+        fits = self.export_fits()
+        return xr.merge([sel_ds, res]), xr.merge([sel_ds, fits])
 
     def fit_many_data(
             self,
@@ -707,11 +709,11 @@ class ModelBase:
             xmax: float = None,
             xstep: float = None,
             progress_bar: bool = True
-    ):
+    ) -> typing.Tuple[xr.Dataset, xr.Dataset]:
         if metadata is None:
             metadata = {}
         dims, lens = [], []
-        for d, l in dataset.dims.items():
+        for d, l in zip(dataset[y].dims, dataset[y].shape):
             if d != x:
                 dims.append(d)
                 lens.append(l)
