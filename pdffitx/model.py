@@ -682,11 +682,14 @@ class ModelBase:
             dataset: xr.Dataset,
             x: str,
             y: str,
+            exclude_vars: list = None,
             metadata: dict = None,
             xmin: float = None,
             xmax: float = None,
             xstep: float = None
     ) -> tp.Tuple[xr.Dataset, xr.Dataset]:
+        if exclude_vars is None:
+            exclude_vars = []
         if metadata is None:
             metadata = {}
         self.set_data(dataset[x].values, dataset[y].values, None)
@@ -694,7 +697,7 @@ class ModelBase:
         self.set_xrange(xmin, xmax, xstep)
         self.optimize()
         self.update()
-        sel_ds = dataset.drop_vars([x, y])
+        sel_ds = dataset.drop_vars([x, y] + exclude_vars)
         res = self.export_result()
         fits = self.export_fits()
         return xr.merge([sel_ds, res]), xr.merge([sel_ds, fits])
@@ -704,12 +707,15 @@ class ModelBase:
             dataset: xr.Dataset,
             x: str,
             y: str,
+            exclude_vars: list = None,
             metadata: dict = None,
             xmin: float = None,
             xmax: float = None,
             xstep: float = None,
             progress_bar: bool = True
     ) -> typing.Tuple[xr.Dataset, xr.Dataset]:
+        if exclude_vars is None:
+            exclude_vars = []
         if metadata is None:
             metadata = {}
         dims, lens = [], []
@@ -724,7 +730,7 @@ class ModelBase:
         for idx in idxs_tqdm:
             pos = dict(zip(dims, idx))
             sel_ds = dataset.isel(pos)
-            res, fits = self.fit_one_data(sel_ds, x, y, metadata, xmin, xmax, xstep)
+            res, fits = self.fit_one_data(sel_ds, x, y, exclude_vars, metadata, xmin, xmax, xstep)
             res = res.expand_dims(dims)
             fits = fits.expand_dims(dims)
             ress.append(res)
