@@ -421,11 +421,11 @@ class ReductionCalculator:
 
         return interact(
             func,
-            qmin=widgets.FloatSlider(pdf_config.qmin, vmin=0., vmax=2.),
-            qmax=widgets.FloatSlider(pdf_config.qmax, vmin=10., vmax=30.0),
-            qmaxinst=widgets.FloatSlider(pdf_config.qmaxinst, vmin=20.0, vmax=30.0),
-            lowessf=widgets.FloatSlider(pdf_config.lowessf, vmin=0.0, vmax=0.1),
-            qcutoff=widgets.FloatSlider(pdf_config.qcutoff, vmin=0.0, vmax=30.0),
+            qmin=widgets.FloatSlider(pdf_config.qmin, min=0., max=2.),
+            qmax=widgets.FloatSlider(pdf_config.qmax, min=10., max=30.0),
+            qmaxinst=widgets.FloatSlider(pdf_config.qmaxinst, min=20.0, max=30.0),
+            lowessf=widgets.FloatSlider(pdf_config.lowessf, min=0.0, max=0.1),
+            qcutoff=widgets.FloatSlider(pdf_config.qcutoff, min=0.0, max=30.0),
             endzero=widgets.Checkbox(pdf_config.endzero)
         )
 
