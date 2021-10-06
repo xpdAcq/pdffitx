@@ -29,7 +29,7 @@ class MyPDFConfig(PDFConfig):
 
     def __init__(self):
         super(MyPDFConfig, self).__init__()
-        self.qcutoff = float("inf")
+        self.qcutoff = 24.0
         self.lowessf = 0.04
         self.endzero = True
         self.dataformat = "QA"
