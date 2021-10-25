@@ -632,7 +632,7 @@ class ModelBase:
         Returns:
             tp.List[str]: A list of values.
         """
-        return self._recipe.getNames()
+        return self._recipe.getValues()
 
     def free_and_get_values(self) -> tp.List[str]:
         self._recipe.free("all")
@@ -727,7 +727,7 @@ class ModelBase:
         fitss = []
         idxs = np.stack([np.ravel(i) for i in np.indices(lens)]).transpose()
         idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
-        vals = self.get_values()
+        vals = self.free_and_get_values()
         names = self.get_names()
         dct = dict(zip(names, vals))
         for idx in idxs_tqdm:
