@@ -727,9 +727,13 @@ class ModelBase:
         fitss = []
         idxs = np.stack([np.ravel(i) for i in np.indices(lens)]).transpose()
         idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
+        vals = self.get_values()
+        names = self.get_names()
+        dct = dict(zip(names, vals))
         for idx in idxs_tqdm:
             pos = dict(zip(dims, idx))
             sel_ds = dataset.isel(pos)
+            self.set_value(dct)
             res, fits = self.fit_one_data(sel_ds, x, y, exclude_vars, metadata, xmin, xmax, xstep)
             res = res.expand_dims(dims)
             fits = fits.expand_dims(dims)
