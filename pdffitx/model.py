@@ -136,10 +136,10 @@ def plot_like_xarray(fits: xr.Dataset, col=None, row=None, col_wrap=None, sharex
     axes: typing.Iterable[plt.Axes] = facet.axes.flatten()
     # get the dimensions to plot
     dims = []
-    if col is not None:
-        dims.append(col)
     if row is not None:
         dims.append(row)
+    if col is not None:
+        dims.append(col)
     # get the idxs
     sizes = [fits.dims[d] for d in dims]
     idxs = np.stack([np.ravel(i) for i in np.indices(sizes)]).transpose()
