@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tqdm
 import xarray as xr
+from xarray.plot import FacetGrid
 from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.fitbase.fitresults import initializeRecipe
 from diffpy.srfit.fitbase.parameter import Parameter
@@ -126,6 +127,29 @@ def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwarg
     ax.axhline(shift, ls='--', alpha=0.5, color="black")
     ax.plot(fits["x"], diff)
     return
+
+
+def plot_like_xarray(fits: xr.Dataset, col=None, row=None, col_wrap=None, sharex=True, sharey=True,
+                     figsize=None, aspect=1, size=3, subplot_kws=None, plot_func=plot_fits, **kwargs) -> FacetGrid:
+    """Plot data in a facet grid like xarray."""
+    facet: FacetGrid = FacetGrid(fits, col, row, col_wrap, sharex, sharey, figsize, aspect, size, subplot_kws)
+    axes: typing.Iterable[plt.Axes] = facet.axes.flatten()
+    # get the dimensions to plot
+    dims = []
+    if col is not None:
+        dims.append(col)
+    if row is not None:
+        dims.append(row)
+    # get the idxs
+    sizes = [fits.dims[d] for d in dims]
+    idxs = np.stack([np.ravel(i) for i in np.indices(sizes)]).transpose()
+    for ax, idx in zip(axes, idxs):
+        ax: plt.Axes
+        idx: np.ndarray
+        pos: dict = dict(zip(dims, idx))
+        sel_fits: xr.Dataset = fits.isel(pos)
+        plot_func(sel_fits, ax=ax, **kwargs)
+    return facet
 
 
 def plot_fits_along_dim(
