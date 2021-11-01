@@ -680,8 +680,8 @@ class ModelBase:
     def fit_one_data(
             self,
             dataset: xr.Dataset,
-            x: str,
-            y: str,
+            x: str = "r",
+            y: str = "G",
             exclude_vars: list = None,
             metadata: dict = None,
             xmin: float = None,
@@ -705,13 +705,14 @@ class ModelBase:
     def fit_many_data(
             self,
             dataset: xr.Dataset,
-            x: str,
-            y: str,
+            x: str = "r",
+            y: str = "G",
             exclude_vars: list = None,
             metadata: dict = None,
             xmin: float = None,
             xmax: float = None,
             xstep: float = None,
+            skipna: float = False,
             progress_bar: bool = True
     ) -> typing.Tuple[xr.Dataset, xr.Dataset]:
         if exclude_vars is None:
@@ -733,6 +734,8 @@ class ModelBase:
         for idx in idxs_tqdm:
             pos = dict(zip(dims, idx))
             sel_ds = dataset.isel(pos)
+            if skipna and np.any(np.isnan(dataset[y].values)):
+                continue
             self.set_value(dct)
             res, fits = self.fit_one_data(sel_ds, x, y, exclude_vars, metadata, xmin, xmax, xstep)
             res = res.expand_dims(dims)
