@@ -7,7 +7,7 @@ import typing as tp
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
-import tqdm
+import tqdm.notebook as tqdm
 import xarray as xr
 from xarray.plot import FacetGrid
 from diffpy.srfit.fitbase import FitResults
@@ -771,7 +771,22 @@ class ModelBase:
 
 class MultiPhaseModel(ModelBase):
     """The model for multi-phase fitting of PDFs. There are difference ways to initialize the recipe.
-    The details are shown below.
+
+    Parameters
+    ----------
+    equation: str
+        The equation of the model.
+    structures: dict
+        A mapping from the symbol in the equation to the structure object with periodic boundary conditoin.
+    characteristics: dict
+        A mapping from the symbol in the equation to the python function.
+    molecules: dict
+        A mapping from the symbol in the equation to the structure object without periodic boundary condition.
+    init_mode: dict
+        How to constrain and add the variables in the model to the fit recipe. Details are in the next section.
+
+    Below is a description of the keys in the init_mode and their behavior.
+
     {}
     """
 
