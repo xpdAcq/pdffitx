@@ -1,7 +1,9 @@
 import typing
 from collections import ChainMap
 
+import numpy as np
 import xarray as xr
+from xarray.plot import FacetGrid
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -75,8 +77,8 @@ def plot_waterfall(
     # set the default color and line style
     axhline_kws = dict(
         ChainMap(
-            {"color": "gray", "ls": "--"},
-            axhline_kws
+            axhline_kws,
+            {"color": "gray", "ls": "--"}
         )
     )
     # turn off legend if lab is specified
@@ -105,3 +107,62 @@ def plot_waterfall(
     # remove the title
     ax.set_title("")
     return ax
+
+
+def plot_grids(
+        ds: xr.Dataset,
+        facet_kws: dict = None,
+        plot_kws: dict = None
+) -> FacetGrid:
+    """Plot all variables in a dataset in a grid.
+
+    Parameters
+    ----------
+    ds :
+        The dataset.
+    facet_kws :
+        The key words for xarray.plot.FacetGrid.
+    plot_kws :
+        The key words for the xarray.DataArray.plot.
+
+    Returns
+    -------
+    The FacetGrid object.
+    """
+    if facet_kws is None:
+        facet_kws = {}
+    if plot_kws is None:
+        plot_kws = {}
+    # add default setting
+    facet_kws = dict(
+        ChainMap(
+            facet_kws,
+            {"sharex": False, "sharey": False}
+        )
+    )
+    # get all the variable names
+    names = [name for name in ds]
+    n = len(names)
+    # add it as an additional dimension
+    dims = dict(ds.dims)
+    dims["variable"] = n
+    # create grid
+    fg = FacetGrid(
+        xr.DataArray(
+            np.zeros(tuple(dims.values())),
+            coords=ds.coords,
+            dims=list(dims.keys())
+        ),
+        col="variable",
+        **facet_kws
+    )
+    # get the axes
+    axes: typing.Sequence[plt.Axes] = fg.axes.flatten()
+    for i in range(n):
+        ds[names[i]].plot(ax=axes[i], **plot_kws)
+    m = len(axes)
+    for i in range(n, m):
+        axes[i].axis("off")
+    # tight layout
+    fg.fig.tight_layout()
+    return fg
