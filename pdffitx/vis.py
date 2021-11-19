@@ -97,7 +97,7 @@ def plot_waterfall(
     # add labels
     if lab:
         if lab_xys is None:
-            xc = ds[x].max().item() * 0.8
+            xc = ds[x].max().item() * 0.7
             ycs = (offset.values + ydata.max(dim=x).values) / 2.
             lab_xys = [(xc, yc) for yc in ycs]
         for text, xy in zip(ds[lab].values, lab_xys):
