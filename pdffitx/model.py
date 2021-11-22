@@ -130,7 +130,11 @@ def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwarg
 
 
 def plot_like_xarray(fits: xr.Dataset, col=None, row=None, col_wrap=None, sharex=True, sharey=True,
-                     figsize=None, aspect=1, size=3, subplot_kws=None, plot_func=plot_fits, **kwargs) -> FacetGrid:
+                     figsize=None, aspect=1, size=3, subplot_kws=None, plot_func=plot_fits,
+                     label: str = "rw", label_str: str = "{} = {:.2f}",
+                     label_xy: typing.Tuple[float, float] = (0.7, 0.9),
+                     **kwargs
+                     ) -> FacetGrid:
     """Plot data in a facet grid like xarray."""
     facet: FacetGrid = FacetGrid(fits, col, row, col_wrap, sharex, sharey, figsize, aspect, size, subplot_kws)
     axes: typing.Iterable[plt.Axes] = facet.axes.flatten()
@@ -149,7 +153,19 @@ def plot_like_xarray(fits: xr.Dataset, col=None, row=None, col_wrap=None, sharex
         pos: dict = dict(zip(dims, idx))
         sel_fits: xr.Dataset = fits.isel(pos)
         plot_func(sel_fits, ax=ax, **kwargs)
+        if label:
+            l_val = sel_fits[label].item()
+            l_key = get_name(sel_fits[label])
+            l_text = label_str.format(l_key, l_val)
+            ax.annotate(l_text, xy=label_xy, xycoords='axes fraction')
     return facet
+
+
+def get_name(da: xr.DataArray) -> str:
+    for n in ["long_name", "standard_name", "short_name"]:
+        if n in da.attrs:
+            return da.attrs[n]
+    return str(da.name)
 
 
 def plot_fits_along_dim(
