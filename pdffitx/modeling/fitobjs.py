@@ -198,16 +198,16 @@ class ConConfig:
     """
 
     def __init__(
-        self,
-        name: str,
-        parser: MyParser,
-        eq: str,
-        fit_range: Tuple[float, float, float],
-        genconfigs: List[GenConfig] = None,
-        funconfigs: List[FunConfig] = None,
-        baselines: List[Callable] = None,
-        res_eq: str = "resv",
-        weight: float = 1.
+            self,
+            name: str,
+            parser: MyParser,
+            eq: str,
+            fit_range: Tuple[float, float, float],
+            genconfigs: List[GenConfig] = None,
+            funconfigs: List[FunConfig] = None,
+            baselines: List[Callable] = None,
+            res_eq: str = "resv",
+            weight: float = 1.
     ):
         """Initiate the instance."""
         self.name: str = name
@@ -219,5 +219,3 @@ class ConConfig:
         self.baselines: List[ProfileGenerator] = baselines if baselines else list()
         self.res_eq: str = res_eq
         self.weight = weight
-
-

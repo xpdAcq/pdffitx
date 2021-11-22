@@ -14,11 +14,11 @@ __all__ = [
 
 
 def calib_pipe(
-    ai: AzimuthalIntegrator, img: ndarray, pdfconfig: PDFConfig, stru: Crystal,
-    fit_range: FIT_RANGE, qdamp0: float, qbroad0: float,
-    bg_img: ndarray = None, bg_scale: float = None,
-    mask_setting: dict = None, integ_setting: dict = None, img_setting: dict = None, chi_plot_setting: dict
-    = None, pdf_plot_setting: dict = None, ncpu: int = None
+        ai: AzimuthalIntegrator, img: ndarray, pdfconfig: PDFConfig, stru: Crystal,
+        fit_range: FIT_RANGE, qdamp0: float, qbroad0: float,
+        bg_img: ndarray = None, bg_scale: float = None,
+        mask_setting: dict = None, integ_setting: dict = None, img_setting: dict = None, chi_plot_setting: dict
+        = None, pdf_plot_setting: dict = None, ncpu: int = None
 ) -> tp.Tuple[PDFGetter, MyRecipe]:
     """Pipeline-style qdamp, qbroad calibration.
 

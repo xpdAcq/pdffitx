@@ -8,19 +8,19 @@ from pdffitx.parsers.fitdata import dict_to_array, dicts_to_array
     "dct,keys,expected",
     [
         (
-            {
-                "result": {
-                    "x": [0, 1, 2],
-                    "y": [1, 2, 1],
-                    "ycalc": [1, 1, 1],
-                }
-            },
-            ("result",),
-            np.array(
-                [[0, 1, 2],
-                 [1, 2, 1],
-                 [1, 1, 1]]
-            )
+                {
+                    "result": {
+                        "x": [0, 1, 2],
+                        "y": [1, 2, 1],
+                        "ycalc": [1, 1, 1],
+                    }
+                },
+                ("result",),
+                np.array(
+                    [[0, 1, 2],
+                     [1, 2, 1],
+                     [1, 1, 1]]
+                )
         )
     ]
 )
@@ -35,17 +35,17 @@ def test_dict_to_array(dct, keys, expected):
     "dcts,keys,expected",
     [
         (
-            [
-                {"result": {"x": [0, 1], "ycalc": [2, 1], "y": [1, 2]}},
-                {"result": {"x": [0, 1], "ycalc": [1, 2], "y": [2, 1]}}
-            ],
-            ("result",),
-            np.array(
                 [
-                    [[0, 1], [1, 2], [2, 1]],
-                    [[0, 1], [2, 1], [1, 2]]
-                ]
-            )
+                    {"result": {"x": [0, 1], "ycalc": [2, 1], "y": [1, 2]}},
+                    {"result": {"x": [0, 1], "ycalc": [1, 2], "y": [2, 1]}}
+                ],
+                ("result",),
+                np.array(
+                    [
+                        [[0, 1], [1, 2], [2, 1]],
+                        [[0, 1], [2, 1], [1, 2]]
+                    ]
+                )
         )
     ]
 )

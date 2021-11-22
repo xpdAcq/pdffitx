@@ -14,14 +14,14 @@ import pdffitx.modeling as md
 
 
 def instrucalib(
-    poni_file: str, img_file: str, cfg_file: str = None, stru_file: str = None, output_dir=".",
-    fit_range: tp.Tuple[float, float, float] = (2.0, 60.0, 0.01),
-    qdamp0: float = 0.04, qbroad0: float = 0.02,
-    bg_img_file: str = None, bg_scale: float = None,
-    mask_setting: tp.Union[dict, str] = None, integ_setting: dict = None,
-    chi_plot_setting: tp.Union[dict, str] = None, img_setting: tp.Union[dict, str] = None,
-    pdf_plot_setting: tp.Union[dict, str] = None, ncpu: int = None,
-    show: bool = False
+        poni_file: str, img_file: str, cfg_file: str = None, stru_file: str = None, output_dir=".",
+        fit_range: tp.Tuple[float, float, float] = (2.0, 60.0, 0.01),
+        qdamp0: float = 0.04, qbroad0: float = 0.02,
+        bg_img_file: str = None, bg_scale: float = None,
+        mask_setting: tp.Union[dict, str] = None, integ_setting: dict = None,
+        chi_plot_setting: tp.Union[dict, str] = None, img_setting: tp.Union[dict, str] = None,
+        pdf_plot_setting: tp.Union[dict, str] = None, ncpu: int = None,
+        show: bool = False
 ):
     """Calibrate the 'qdamp' and 'qbroad' factor of the instrument in a pipeline process.
 

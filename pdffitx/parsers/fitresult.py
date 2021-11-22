@@ -8,11 +8,11 @@ from .tools import get_value
 
 
 def to_dataframe(
-    dct: dict,
-    column: tuple = ("conresults", 0, "name"),
-    index: tuple = ("varnames",),
-    data: tuple = ("varvals",),
-    index_name: str = None
+        dct: dict,
+        column: tuple = ("conresults", 0, "name"),
+        index: tuple = ("varnames",),
+        data: tuple = ("varvals",),
+        index_name: str = None
 ):
     """Convert the fitting results to a dataframe"""
     arr = to_xarray(dct, column, index, data)
@@ -22,8 +22,8 @@ def to_dataframe(
 
 
 def to_xarray(
-    dct: dict, name: tuple = ("conresults", 0, "name"),
-    coords: tuple = ("varnames",), data: tuple = ("varvals",), dim: str = "parameter"
+        dct: dict, name: tuple = ("conresults", 0, "name"),
+        coords: tuple = ("varnames",), data: tuple = ("varvals",), dim: str = "parameter"
 ) -> xr.DataArray:
     """Convert the fitting results to xarray data array.
 
@@ -73,8 +73,8 @@ def rename_rule(name: str) -> str:
         if word in words:
             return rf"$\{word}$" + " (deg)"
     for word in (
-        'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
-        'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
+            'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
+            'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
     ):
         if word in words:
             return rf"{word[0]}$_{{{word[1:]}}}$({words[1]})" + r" ($\mathrm{\AA}^2$)"

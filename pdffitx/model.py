@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tqdm.notebook as tqdm
 import xarray as xr
-from xarray.plot import FacetGrid
 from diffpy.srfit.fitbase import FitResults
 from diffpy.srfit.fitbase.fitresults import initializeRecipe
 from diffpy.srfit.fitbase.parameter import Parameter
 from diffpy.srfit.fitbase.profile import Profile
 from pyobjcryst.crystal import Crystal
 from pyobjcryst.molecule import Molecule
+from xarray.plot import FacetGrid
 
 import pdffitx.modeling as md
 
@@ -67,8 +67,8 @@ def get_symbol(name: str) -> str:
         if word in words:
             return rf"$\{word}$"
     for word in (
-        'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
-        'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
+            'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
+            'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
     ):
         if word in words:
             return rf"{word[0]}$_{{{word[1:]}}}$({words[1]})"
@@ -97,8 +97,8 @@ def get_unit(name: str) -> str:
         if word in words:
             return "deg"
     for word in (
-        'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
-        'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
+            'Uiso', 'U11', 'U12', 'U13', 'U21', 'U22', 'U23', 'U31', 'U32', 'U33',
+            'Biso', 'B11', 'B12', 'B13', 'B21', 'B22', 'B23', 'B31', 'B32', 'B33',
     ):
         if word in words:
             return "Å$^2$"
@@ -153,9 +153,9 @@ def plot_like_xarray(fits: xr.Dataset, col=None, row=None, col_wrap=None, sharex
 
 
 def plot_fits_along_dim(
-    fits: xr.Dataset, dim: str, num_row: int = 1, offset: float = 0.,
-    figure_config: dict = None, grid_config: dict = None, plot_config: dict = None,
-    subplot_config: dict = None
+        fits: xr.Dataset, dim: str, num_row: int = 1, offset: float = 0.,
+        figure_config: dict = None, grid_config: dict = None, plot_config: dict = None,
+        subplot_config: dict = None
 ) -> tp.List[plt.Axes]:
     """Plot the fitted curves in multiple panels."""
     if subplot_config is None:

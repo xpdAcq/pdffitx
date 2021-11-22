@@ -48,7 +48,7 @@ def write_crystal(stru: Crystal, stru_file: str, fmt: str) -> None:
 
 
 def save_stru(
-    stru: tp.Union[Crystal, Structure], base_name: str, folder: str, fmt: str = "cif"
+        stru: tp.Union[Crystal, Structure], base_name: str, folder: str, fmt: str = "cif"
 ) -> Path:
     """Save refined structure.
 
@@ -105,7 +105,7 @@ def save_res(recipe: FitRecipe, base_name: str, folder: str) -> Path:
 
 
 def save(
-    recipe: MyRecipe, base_name: str, folder: str, stru_fmt: str = "cif"
+        recipe: MyRecipe, base_name: str, folder: str, stru_fmt: str = "cif"
 ) -> tp.Tuple[Path, tp.List[Path], tp.List[Path]]:
     """Save the results of the refined recipe.
 

@@ -9,13 +9,13 @@ G = tp.Union[PDFGenerator, DebyePDFGenerator]
 
 
 def initialize(
-    recipe: MyRecipe,
-    scale: bool = True,
-    delta: tp.Union[str, None] = "2",
-    lat: tp.Union[str, None] = "s",
-    adp: tp.Union[str, None] = "a",
-    xyz: tp.Union[str, None] = "s",
-    params: tp.Union[None, str, tp.List[str]] = "a"
+        recipe: MyRecipe,
+        scale: bool = True,
+        delta: tp.Union[str, None] = "2",
+        lat: tp.Union[str, None] = "s",
+        adp: tp.Union[str, None] = "a",
+        xyz: tp.Union[str, None] = "s",
+        params: tp.Union[None, str, tp.List[str]] = "a"
 ) -> MyRecipe:
     """Initialize a single-contribution recipe with the variables.
 
@@ -86,9 +86,9 @@ def initialize(
 
 
 def add_con_vars(
-    recipe: MyRecipe,
-    name: tp.Union[str, None] = None,
-    params: tp.Union[None, str, tp.List[str]] = "a"
+        recipe: MyRecipe,
+        name: tp.Union[str, None] = None,
+        params: tp.Union[None, str, tp.List[str]] = "a"
 ):
     """Add variables at contribution level.
 
@@ -124,13 +124,13 @@ def add_params(recipe: MyRecipe, con: MyContribution, params: tp.Union[None, str
 
 
 def add_gen_vars(
-    recipe: MyRecipe,
-    names: tp.Tuple[str, str] = None,
-    scale: bool = True,
-    delta: tp.Union[str, None] = "2",
-    lat: tp.Union[str, None] = "s",
-    adp: tp.Union[str, None] = "a",
-    xyz: tp.Union[str, None] = "s",
+        recipe: MyRecipe,
+        names: tp.Tuple[str, str] = None,
+        scale: bool = True,
+        delta: tp.Union[str, None] = "2",
+        lat: tp.Union[str, None] = "s",
+        adp: tp.Union[str, None] = "a",
+        xyz: tp.Union[str, None] = "s",
 ) -> None:
     """Add parameters at generator level.
 
@@ -223,8 +223,8 @@ def add_lat(recipe: MyRecipe, gen: G, lat: tp.Union[str, None]) -> None:
 
 
 def add_adp(
-    recipe: MyRecipe, gen: G, adp: tp.Union[str, None],
-    symbols: tp.Tuple[str] = ("Biso", "B11", "B22", "B33")
+        recipe: MyRecipe, gen: G, adp: tp.Union[str, None],
+        symbols: tp.Tuple[str] = ("Biso", "B11", "B22", "B33")
 ) -> None:
     """Add the atomic displacement parameter of the phase."""
     if not adp:

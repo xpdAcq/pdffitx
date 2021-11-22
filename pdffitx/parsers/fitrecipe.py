@@ -100,8 +100,8 @@ def fitresult_to_dict(result: FitResults) -> dict:
 
 
 def get_conresults(
-    conresults: tp.Dict[str, ContributionResults],
-    cons: tp.Dict[str, MyContribution]
+        conresults: tp.Dict[str, ContributionResults],
+        cons: tp.Dict[str, MyContribution]
 ) -> tp.Generator:
     for name, conresult in conresults.items():
         con = cons[name]

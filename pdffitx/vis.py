@@ -1,11 +1,10 @@
 import typing
 from collections import ChainMap
 
+import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
 from xarray.plot import FacetGrid
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def _get_offset(arr: np.ndarray, delta: float = 0.) -> np.ndarray:
@@ -18,7 +17,6 @@ def _get_offset(arr: np.ndarray, delta: float = 0.) -> np.ndarray:
 
 
 def get_offset(da: xr.DataArray, delta: float = 0.) -> xr.DataArray:
-
     return xr.apply_ufunc(
         lambda x: _get_offset(x, delta),
         da,

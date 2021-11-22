@@ -8,93 +8,93 @@ from pdffitx.modeling import F, multi_phase, optimize, fit_calib, MyParser
     "data_key,kwargs,free_params,use_cf,expected",
     [
         (
-            "Ni_stru",
-            {
-                'values': {'scale_G0': 0.1, 'a_G0': 3.42, 'Biso_Ni_G0': 0.07, 'psize_f0': 300,
-                           'delta2_G0': 2.5},
-                'bounds': {'scale_G0': [-1, 1], 'a_G0': [0, 6], 'Biso_Ni_G0': [0, 1], 'psize_f0': [2, 400],
-                           'delta2_G0': [0, 5]}
-            },
-            True,
-            True,
-            {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'psize_f0', 'delta2_G0'}
+                "Ni_stru",
+                {
+                    'values': {'scale_G0': 0.1, 'a_G0': 3.42, 'Biso_Ni_G0': 0.07, 'psize_f0': 300,
+                               'delta2_G0': 2.5},
+                    'bounds': {'scale_G0': [-1, 1], 'a_G0': [0, 6], 'Biso_Ni_G0': [0, 1], 'psize_f0': [2, 400],
+                               'delta2_G0': [0, 5]}
+                },
+                True,
+                True,
+                {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'psize_f0', 'delta2_G0'}
         ),
         (
-            "Ni_stru_diffpy",
-            {
-                'values': {'scale_G0': 0.1, 'a_G0': 3.42, 'Biso_Ni_G0': 0.07, 'psize_f0': 300,
-                           'delta2_G0': 2.5},
-                'bounds': {'scale_G0': [-1, 1], 'a_G0': [0, 6], 'Biso_Ni_G0': [0, 1], 'psize_f0': [2, 400],
-                           'delta2_G0': [0, 5]},
-            },
-            False,
-            True,
-            {'Biso_Ni_G0', 'a_G0', 'alpha_G0', 'b_G0', 'beta_G0', 'c_G0', 'gamma_G0', 'delta2_G0',
-             'psize_f0', 'scale_G0'}
+                "Ni_stru_diffpy",
+                {
+                    'values': {'scale_G0': 0.1, 'a_G0': 3.42, 'Biso_Ni_G0': 0.07, 'psize_f0': 300,
+                               'delta2_G0': 2.5},
+                    'bounds': {'scale_G0': [-1, 1], 'a_G0': [0, 6], 'Biso_Ni_G0': [0, 1], 'psize_f0': [2, 400],
+                               'delta2_G0': [0, 5]},
+                },
+                False,
+                True,
+                {'Biso_Ni_G0', 'a_G0', 'alpha_G0', 'b_G0', 'beta_G0', 'c_G0', 'gamma_G0', 'delta2_G0',
+                 'psize_f0', 'scale_G0'}
         ),
         (
-            "ZrP_stru",
-            dict(),
-            False,
-            True,
-            {'Biso_O_G0', 'Biso_P_G0', 'Biso_Zr_G0', 'a_G0', 'b_G0', 'beta_G0', 'c_G0',
-             'delta2_G0', 'psize_f0', 'scale_G0'}
+                "ZrP_stru",
+                dict(),
+                False,
+                True,
+                {'Biso_O_G0', 'Biso_P_G0', 'Biso_Zr_G0', 'a_G0', 'b_G0', 'beta_G0', 'c_G0',
+                 'delta2_G0', 'psize_f0', 'scale_G0'}
         ),
         (
-            "ZrP_stru",
-            {
-                'bounds': {'x_0_G0': [-2, 2]}
-            },
-            True,
-            True,
-            {'Biso_O_G0', 'Biso_P_G0', 'Biso_Zr_G0', 'a_G0', 'b_G0', 'beta_G0', 'c_G0', 'delta2_G0',
-             'psize_f0', 'scale_G0', 'x_0_G0', 'x_1_G0', 'x_2_G0', 'x_3_G0', 'x_4_G0', 'x_5_G0', 'x_6_G0',
-             'x_7_G0', 'x_8_G0', 'x_9_G0', 'y_0_G0', 'y_1_G0', 'y_2_G0', 'y_3_G0', 'y_4_G0',
-             'y_5_G0', 'y_6_G0', 'y_7_G0', 'y_8_G0', 'y_9_G0', 'z_0_G0', 'z_1_G0', 'z_2_G0',
-             'z_3_G0', 'z_4_G0', 'z_5_G0', 'z_6_G0', 'z_7_G0', 'z_8_G0', 'z_9_G0'}
+                "ZrP_stru",
+                {
+                    'bounds': {'x_0_G0': [-2, 2]}
+                },
+                True,
+                True,
+                {'Biso_O_G0', 'Biso_P_G0', 'Biso_Zr_G0', 'a_G0', 'b_G0', 'beta_G0', 'c_G0', 'delta2_G0',
+                 'psize_f0', 'scale_G0', 'x_0_G0', 'x_1_G0', 'x_2_G0', 'x_3_G0', 'x_4_G0', 'x_5_G0', 'x_6_G0',
+                 'x_7_G0', 'x_8_G0', 'x_9_G0', 'y_0_G0', 'y_1_G0', 'y_2_G0', 'y_3_G0', 'y_4_G0',
+                 'y_5_G0', 'y_6_G0', 'y_7_G0', 'y_8_G0', 'y_9_G0', 'z_0_G0', 'z_1_G0', 'z_2_G0',
+                 'z_3_G0', 'z_4_G0', 'z_5_G0', 'z_6_G0', 'z_7_G0', 'z_8_G0', 'z_9_G0'}
         ),
         (
-            "Ni_stru",
-            {
-                'cf_params': ['psize_f0'],
-                'sg_params': dict()
-            },
-            True,
-            True,
-            {'psize_f0'}
+                "Ni_stru",
+                {
+                    'cf_params': ['psize_f0'],
+                    'sg_params': dict()
+                },
+                True,
+                True,
+                {'psize_f0'}
         ),
         (
-            "Ni_stru_diffpy",
-            {
-                'cf_params': list(),
-                'sg_params': {'G0': 225}
-            },
-            True,
-            True,
-            {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
+                "Ni_stru_diffpy",
+                {
+                    'cf_params': list(),
+                    'sg_params': {'G0': 225}
+                },
+                True,
+                True,
+                {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
         ),
         (
-            "Ni_stru_diffpy",
-            {
-                'sg_params': {'G0': 225}
-            },
-            True,
-            False,
-            {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
+                "Ni_stru_diffpy",
+                {
+                    'sg_params': {'G0': 225}
+                },
+                True,
+                False,
+                {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
         ),
         (
-            "Ni_stru",
-            {},
-            True,
-            False,
-            {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
+                "Ni_stru",
+                {},
+                True,
+                False,
+                {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0'}
         ),
         (
-            "Ni_stru",
-            {"add_eq": "A * exp(- B * r ** 2) * sin(C * r)"},
-            True,
-            False,
-            {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0', "A", "B", "C"}
+                "Ni_stru",
+                {"add_eq": "A * exp(- B * r ** 2) * sin(C * r)"},
+                True,
+                False,
+                {'scale_G0', 'a_G0', 'Biso_Ni_G0', 'delta2_G0', "A", "B", "C"}
         )
     ]
 )
