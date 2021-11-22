@@ -110,6 +110,7 @@ def plot_waterfall(
 def plot_grids(
         ds: xr.Dataset,
         facet_kws: dict = None,
+        plot_func: typing.Callable = xr.plot.line,
         plot_kws: dict = None
 ) -> FacetGrid:
     """Plot all variables in a dataset in a grid.
@@ -120,6 +121,8 @@ def plot_grids(
         The dataset.
     facet_kws :
         The key words for xarray.plot.FacetGrid.
+    plot_func :
+        The function used to plot.
     plot_kws :
         The key words for the xarray.DataArray.plot.
 
@@ -157,7 +160,7 @@ def plot_grids(
     # get the axes
     axes: typing.Sequence[plt.Axes] = fg.axes.flatten()
     for i in range(n):
-        ds[names[i]].plot(ax=axes[i], **plot_kws)
+        plot_func(ds[names[i]], ax=axes[i], **plot_kws)
     m = len(axes)
     for i in range(n, m):
         axes[i].axis("off")
