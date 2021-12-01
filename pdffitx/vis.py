@@ -93,15 +93,15 @@ def plot_waterfall(
         for i in range(n):
             ax.axhline(offset[i].item(), **axhline_kws)
     # plot the lines
-    ydata.plot.line(**line_kws, hue=hue, ax=ax)
+    lines = ydata.plot.line(**line_kws, hue=hue, ax=ax)
     # add labels
     if lab:
         if lab_xys is None:
             xc = ds[x].max().item() * 0.75
             ycs = (offset.values + ydata.max(dim=x).values) / 2.
             lab_xys = [(xc, yc) for yc in ycs]
-        for text, xy in zip(ds[lab].values, lab_xys):
-            ax.annotate(str(text), xy, va="center", ha="center")
+        for text, xy, line in zip(ds[lab].values, lab_xys, lines):
+            ax.annotate(str(text), xy, va="center", ha="center", color=line.get_color())
     # remove the title
     ax.set_title("")
     return ax
