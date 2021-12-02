@@ -29,6 +29,7 @@ def plot_waterfall(
         ds: xr.Dataset,
         y: str,
         *,
+        offset: typing.Sequence[float] = None,
         lab: str = None,
         delta: float = 0.,
         ax: plt.Axes = None,
@@ -45,6 +46,8 @@ def plot_waterfall(
         The dataset.
     y :
         The name of the y values. It should be a 2d array.
+    offset :
+        The zero ground line levels.
     lab :
         The name of the labels.
     delta :
@@ -83,7 +86,7 @@ def plot_waterfall(
     if lab:
         line_kws["add_legend"] = False
     # get the offsets for the lines
-    offset = get_offset(ds[y], delta)
+    offset = xr.DataArray(offset, dims=[ds[y].dims[0]]) if offset else get_offset(ds[y], delta)
     # shift the lines
     ydata = ds[y] + offset
     ydata.attrs = ds[y].attrs
@@ -97,8 +100,10 @@ def plot_waterfall(
     # add labels
     if lab:
         if lab_xys is None:
+            ymax = ax.get_ylim()[1]
+            ybs = np.insert(offset.values, 0, [ymax])
             xc = ds[x].max().item() * 0.75
-            ycs = (offset.values + ydata.max(dim=x).values) / 2.
+            ycs = 0.3 * ybs[:-1] + 0.7 * ybs[1:]
             lab_xys = [(xc, yc) for yc in ycs]
         for text, xy, line in zip(ds[lab].values, lab_xys, lines):
             ax.annotate(str(text), xy, va="center", ha="center", color=line.get_color())
