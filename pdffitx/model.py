@@ -800,6 +800,8 @@ class MultiPhaseModel(ModelBase):
         A mapping from the symbol in the equation to the structure object without periodic boundary condition.
     init_mode: dict
         How to constrain and add the variables in the model to the fit recipe. Details are in the next section.
+    specific_modes : dict
+        A mapping from the generator name to its initialization mod.
 
     Below is a description of the keys in the init_mode and their behavior.
 
@@ -808,7 +810,7 @@ class MultiPhaseModel(ModelBase):
 
     def __init__(self, equation: str = None, structures: tp.Dict[str, Crystal] = None,
                  characteristics: tp.Dict[str, tp.Callable] = None, init_mode: dict = None,
-                 molecules: tp.Dict[str, Molecule] = None):
+                 molecules: tp.Dict[str, Molecule] = None, specific_modes: dict = None):
         if structures is None:
             structures = {}
         if molecules is None:
@@ -820,6 +822,7 @@ class MultiPhaseModel(ModelBase):
         self._molecules = molecules
         self._characteristics = characteristics
         self._init_mode = init_mode if init_mode else {}
+        self._specific_modes = specific_modes if specific_modes else {}
         recipe = self._create_recipe()
         super(MultiPhaseModel, self).__init__(recipe)
 
@@ -832,6 +835,7 @@ class MultiPhaseModel(ModelBase):
         for name, molecule in self._molecules.items():
             dpg = md.DebyePDFGenerator(name)
             dpg.setStructure(molecule, periodic=False)
+            dpg.setQmin(0.8)
             pgs.append(dpg)
         fc = md.MyContribution(self.__class__.__name__)
         fc.setProfile(Profile())
@@ -845,7 +849,15 @@ class MultiPhaseModel(ModelBase):
         fr = md.MyRecipe()
         fr.clearFitHooks()
         fr.addContribution(fc)
-        md.initialize(fr, **self._init_mode)
+        if self._specific_modes:
+            cname = next(iter(fr.contributions.keys()))
+            md.add_con_vars(fr, name=cname, params=self._specific_modes.get("params", "a"))
+            for gname in self._structures:
+                md.add_gen_vars(fr, names=(cname, gname), **self._specific_modes.get(gname, {}))
+            for gname in self._molecules:
+                md.add_gen_vars(fr, names=(cname, gname), **self._specific_modes.get(gname, {}))
+        else:
+            md.initialize(fr, **self._init_mode)
         return fr
 
     def get_equation(self) -> str:
