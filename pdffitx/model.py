@@ -835,7 +835,7 @@ class MultiPhaseModel(ModelBase):
         for name, molecule in self._molecules.items():
             dpg = md.DebyePDFGenerator(name)
             dpg.setStructure(molecule, periodic=False)
-            dpg.setQmin(0.8)
+            dpg.setQmin(1.0)
             pgs.append(dpg)
         fc = md.MyContribution(self.__class__.__name__)
         fc.setProfile(Profile())
