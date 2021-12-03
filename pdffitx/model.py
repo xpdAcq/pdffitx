@@ -666,7 +666,7 @@ class ModelBase:
         self._recipe.fix("all")
         return names
 
-    def get_values(self) -> tp.List[str]:
+    def get_values(self) -> tp.List[float]:
         """Get the values of the free parameters.
 
         Returns:
@@ -674,7 +674,7 @@ class ModelBase:
         """
         return self._recipe.getValues()
 
-    def free_and_get_values(self) -> tp.List[str]:
+    def free_and_get_values(self) -> tp.List[float]:
         self._recipe.free("all")
         values = self._recipe.getValues()
         self._recipe.fix("all")
