@@ -172,3 +172,130 @@ def plot_grids(
     # tight layout
     fg.fig.tight_layout()
     return fg
+
+
+def _get_label(da: xr.DataArray):
+    ss = ("long_name", "standard_name", "short_name", "name")
+    name = da.name
+    for s in ss:
+        if s in da.attrs:
+            name = da.attrs[s]
+            break
+    units = da.attrs.get("units")
+    units = "[{}]".format(units) if units else ""
+    return "{} {}".format(name, units)
+
+
+def gridplot_vars(
+        ds: xr.Dataset,
+        plot_func: typing.Callable[[xr.Dataset, plt.Axes, typing.Any], typing.Any],
+        *,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        set_titles: bool = True,
+        set_labels: bool = False
+) -> FacetGrid:
+    if facet_kws is None:
+        facet_kws = {}
+    if plot_kws is None:
+        plot_kws = {}
+    # add default setting
+    facet_kws = dict(
+        ChainMap(
+            facet_kws,
+            {"sharex": False, "sharey": False}
+        )
+    )
+    # get all the variable names
+    names = [name for name in ds]
+    n = len(names)
+    # add it as an additional dimension
+    dims = dict(ds.dims)
+    dims["variable"] = n
+    # create grid
+    fg = FacetGrid(
+        xr.DataArray(
+            np.zeros(tuple(dims.values())),
+            coords={k: v for k, v in ds.coords.items() if k in dims},
+            dims=list(dims.keys())
+        ),
+        col="variable",
+        **facet_kws
+    )
+    # get the axes
+    axes: typing.Sequence[plt.Axes] = fg.axes.flatten()
+    for i in range(n):
+        plot_func(ds[names[i]], axes[i], **plot_kws)
+    m = len(axes)
+    for i in range(n, m):
+        axes[i].axis("off")
+    # set titles and labels
+    labels = [_get_label(ds[name]) for name in ds]
+    if set_titles:
+        for i in range(n):
+            axes[i].set_title(labels[i])
+    if set_labels:
+        for i in range(n):
+            axes[i].set_ylabel(labels[i])
+    # tight layout
+    fg.fig.tight_layout()
+    return fg
+
+
+def plot_bar(ds: xr.Dataset, ax: plt.Axes, **kwargs) -> None:
+    ds.to_dataframe().plot.bar(ax=ax, **kwargs)
+    return
+
+
+def barplot_vars(
+        ds: xr.Dataset,
+        *,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        set_titles: bool = False,
+        set_labels: bool = False
+) -> FacetGrid:
+    # no legend
+    plot_kws.setdefault("legend", False)
+    return gridplot_vars(
+        ds, plot_bar, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
+    )
+
+
+def lineplot_vars(
+        ds: xr.Dataset,
+        *,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        set_titles: bool = False,
+        set_labels: bool = False
+) -> FacetGrid:
+    return gridplot_vars(
+        ds, xr.plot.line, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
+    )
+
+
+def imshow_vars(
+        ds: xr.Dataset,
+        *,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        set_titles: bool = False,
+        set_labels: bool = False
+) -> FacetGrid:
+    return gridplot_vars(
+        ds, xr.plot.imshow, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
+    )
+
+
+def xrplot_vars(
+        ds: xr.Dataset,
+        *,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        set_titles: bool = False,
+        set_labels: bool = False
+) -> FacetGrid:
+    return gridplot_vars(
+        ds, xr.plot.imshow, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
+    )
