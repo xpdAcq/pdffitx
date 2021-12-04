@@ -301,19 +301,39 @@ def xrplot_vars(
     )
 
 
-def plot_fit(fit: xr.Dataset, ax: plt.Axes, *, offset: float = None, **kwargs) -> None:
+def plot_fit(
+        fit: xr.Dataset,
+        ax: plt.Axes,
+        *,
+        offset: float = None,
+        xmin: float = None,
+        xmax: float = None,
+        **kwargs
+) -> None:
     """Plot the fitted curves."""
-    kwargs.setdefault("xlim", [0, fit["x"][-1].item()])
+    # cut data
+    yobs = fit["yobs"]
+    y = fit["y"]
+    ycalc = fit["ycalc"]
+    if xmin is not None:
+        yobs = yobs.where(yobs["xobs"] >= xmin, drop=True)
+        y = y.where(y["x"] >= xmin, drop=True)
+        ycalc = ycalc.where(ycalc["x"] >= xmin, drop=True)
+    xmax = y["x"].values.max() if xmax is None else xmax
+    yobs = yobs.where(yobs["xobs"] <= xmax, drop=True)
+    y = y.where(y["x"] <= xmax, drop=True)
+    ycalc = ycalc.where(ycalc["x"] <= xmax, drop=True)
+    # plot
     kwargs.setdefault("marker", "o")
     kwargs.setdefault("fillstyle", "none")
     kwargs.setdefault("ls", "none")
-    fit["yobs"].plot.line(ax=ax, **kwargs)
-    ax.plot(fit["x"], fit["ycalc"])
-    diff = fit["y"] - fit["ycalc"]
-    shift = offset if offset else fit["y"].min() - diff.max()
+    yobs.plot.line(ax=ax, **kwargs)
+    ax.plot(y["x"].values, y.values)
+    diff = y - ycalc
+    shift = offset if offset else y.min() - diff.max()
     diff += shift
     ax.axhline(shift, ls='--', alpha=0.5, color="black")
-    ax.plot(fit["x"], diff)
+    ax.plot(y["x"].values, diff.values)
     return
 
 
