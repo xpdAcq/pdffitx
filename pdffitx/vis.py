@@ -243,6 +243,8 @@ def gridplot_vars(
 
 
 def plot_bar(ds: xr.Dataset, ax: plt.Axes, **kwargs) -> None:
+    # no legend
+    kwargs.setdefault("legend", False)
     ds.to_dataframe().plot.bar(ax=ax, **kwargs)
     return
 
@@ -255,8 +257,6 @@ def barplot_vars(
         set_titles: bool = False,
         set_labels: bool = False
 ) -> FacetGrid:
-    # no legend
-    plot_kws.setdefault("legend", False)
     return gridplot_vars(
         ds, plot_bar, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
     )
