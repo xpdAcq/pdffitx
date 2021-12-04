@@ -299,3 +299,84 @@ def xrplot_vars(
     return gridplot_vars(
         ds, xr.plot.imshow, facet_kws=facet_kws, plot_kws=plot_kws, set_titles=set_titles, set_labels=set_labels
     )
+
+
+def plot_fit(fit: xr.Dataset, ax: plt.Axes, *, offset: float = None, **kwargs) -> None:
+    """Plot the fitted curves."""
+    kwargs.setdefault("xlim", [0, fit["x"][-1].item()])
+    kwargs.setdefault("marker", "o")
+    kwargs.setdefault("fillstyle", "none")
+    kwargs.setdefault("ls", "none")
+    fit["yobs"].plot.line(ax=ax, **kwargs)
+    ax.plot(fit["x"], fit["ycalc"])
+    diff = fit["y"] - fit["ycalc"]
+    shift = offset if offset else fit["y"].min() - diff.max()
+    diff += shift
+    ax.axhline(shift, ls='--', alpha=0.5, color="black")
+    ax.plot(fit["x"], diff)
+    return
+
+
+def _get_idxs(shape: typing.Iterable[int]) -> np.ndarray:
+    return np.column_stack([np.ravel(idx) for idx in np.indices(shape)])
+
+
+def gridplot_dims(
+        ds: xr.Dataset,
+        plot_func: typing.Callable[[xr.Dataset, plt.Axes, typing.Any], typing.Any],
+        col: str,
+        *,
+        row: str = None,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        title: str = r"{value}",
+) -> FacetGrid:
+    if facet_kws is None:
+        facet_kws = {}
+    if plot_kws is None:
+        plot_kws = {}
+    # add default setting
+    facet_kws = dict(
+        ChainMap(
+            facet_kws,
+            {"sharex": False, "sharey": False}
+        )
+    )
+    # get the dims and shape
+    dims = [col] if col else [row, col]
+    shape = [ds.dims[d] for d in dims]
+    # add default setting
+    fg = FacetGrid(
+        xr.DataArray(
+            np.zeros(shape),
+            coords={k: v for k, v in ds.coords.items() if k in dims},
+            dims=dims
+        ),
+        col=col,
+        **facet_kws
+    )
+    # get dimensions and idxs
+    axes = fg.axes.flatten()
+    idxss = _get_idxs(shape)
+    for i, idxs in enumerate(idxss):
+        sel_ds = ds.isel(dict(zip(dims, idxs)))
+        plot_func(sel_ds, axes[i], **plot_kws)
+    # title
+    fg.set_titles(title)
+    # tight layout
+    fg.fig.tight_layout()
+    return fg
+
+
+def fitplot_dims(
+        ds: xr.Dataset,
+        col: str,
+        *,
+        row: str = None,
+        facet_kws: dict = None,
+        plot_kws: dict = None,
+        title: str = r"{value}",
+) -> FacetGrid:
+    return gridplot_dims(
+        ds, plot_fit, col, row=row, facet_kws=facet_kws, plot_kws=plot_kws, title=title
+    )
