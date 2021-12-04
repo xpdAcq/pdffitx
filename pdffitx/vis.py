@@ -376,7 +376,15 @@ def fitplot_dims(
         facet_kws: dict = None,
         plot_kws: dict = None,
         title: str = r"{value}",
+        label: str = r"$R_w$ = {:.2f}",
+        label_xy: typing.Tuple[float, float] = (0.7, 0.9)
 ) -> FacetGrid:
-    return gridplot_dims(
+    fg = gridplot_dims(
         ds, plot_fit, col, row=row, facet_kws=facet_kws, plot_kws=plot_kws, title=title
     )
+    if label:
+        axes: typing.Iterable[plt.Axes] = fg.axes.flatten()
+        rws: typing.Iterable[float] = ds["rw"].values.flatten()
+        for ax, rw in zip(axes, rws):
+            ax.annotate(label.format(rw), label_xy, xycoords='axes fraction')
+    return fg
