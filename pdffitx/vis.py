@@ -328,7 +328,7 @@ def plot_fit(
     kwargs.setdefault("fillstyle", "none")
     kwargs.setdefault("ls", "none")
     yobs.plot.line(ax=ax, **kwargs)
-    ax.plot(y["x"].values, y.values)
+    ax.plot(ycalc["x"].values, ycalc.values)
     diff = y - ycalc
     shift = offset if offset else y.min() - diff.max()
     diff += shift
