@@ -827,6 +827,12 @@ class ModelBase:
         fit = self.export_fits()
         return xr.merge([res, fit])
 
+    def _check_nan(self) -> None:
+        for k, v in self.get_name2value().items():
+            if v is None:
+                raise ValueError("{} is None.".format(k))
+        return
+
     def fit_a_dataset(
             self,
             ds: xr.Dataset,
@@ -845,6 +851,7 @@ class ModelBase:
             metadata = {}
         self.cached_input = ds
         self.set_value(inital_guess)
+        self._check_nan()
         self._cache_params()
         self.set_verbose(verbose)
         ydata = ds[y]
