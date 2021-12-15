@@ -821,6 +821,7 @@ class ModelBase:
         self.set_data(xdata, ydata)
         self.set_metadata(metadata)
         self.set_xrange(xmin, xmax, xstep)
+        self.prepare()
         self.optimize()
         self.update()
         res = self.export_result()
@@ -863,7 +864,6 @@ class ModelBase:
         for idx in idxs_tqdm:
             sel_ydata = ydata.isel(dict(zip(dims, idx)))
             coords = {d: sel_ydata[d] for d in dims}
-            self.prepare()
             out_ds: xr.Dataset = self._fit_a_dataarray(sel_ydata, sel_ydata[x], xmin, xmax, xstep, metadata)
             out_ds: xr.Dataset = out_ds.assign_coords(coords).expand_dims(dims)
             dss.append(out_ds)
