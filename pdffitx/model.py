@@ -209,6 +209,9 @@ class ModelBase:
         self._order: tp.List[tp.Union[str, tp.Iterable[str]]] = []
         self._options: dict = {}
         self._fit_state = None
+        self.cached_input: typing.Optional[xr.Dataset] = None
+        self.cached_output: typing.Optional[xr.Dataset] = None
+        self.cached_params: typing.Optional[typing.Dict[str, float]] = None
 
     def parallel(self, ncpu: int) -> None:
         """Parallel computing.
@@ -783,6 +786,83 @@ class ModelBase:
             ress.append(res)
             fitss.append(fits)
         return xr.combine_by_coords(ress), xr.combine_by_coords(fitss)
+
+    def get_name2value(self) -> typing.Dict[str, float]:
+        return dict(zip(self.get_names(), self.get_values()))
+
+    def _cache_params(self) -> None:
+        self.cached_params = self.get_name2value()
+        return
+
+    def prepare(self) -> None:
+        if self.cached_params is not None:
+            self.set_value(self.cached_params)
+        return
+
+    def _get_dims_and_idxs(self, y: str, x: str) -> typing.Tuple[list, np.ndarray]:
+        ydata = self.cached_input[y]
+        dims, sizes = [], []
+        for d, s in zip(ydata.dims, ydata.shape):
+            if d != x:
+                dims.append(d)
+                sizes.append(s)
+        idxs = np.stack([np.ravel(i) for i in np.indices(sizes)]).transpose()
+        return dims, idxs
+
+    def _fit_a_dataarray(
+            self,
+            ydata: xr.DataArray,
+            xdata: xr.DataArray,
+            xmin: typing.Optional[float],
+            xmax: typing.Optional[float],
+            xstep: typing.Optional[float],
+            metadata: typing.Dict[str, float]
+    ) -> xr.Dataset:
+        self.set_data(xdata, ydata)
+        self.set_metadata(metadata)
+        self.set_xrange(xmin, xmax, xstep)
+        self.optimize()
+        self.update()
+        res = self.export_result()
+        fit = self.export_fits()
+        return xr.merge([res, fit])
+
+    def fit_a_dataset(
+            self,
+            ds: xr.Dataset,
+            x: str = "r",
+            y: str = "G",
+            *,
+            inital_guess: typing.Dict[str, float] = None,
+            xmin: typing.Optional[float] = None,
+            xmax: typing.Optional[float] = None,
+            xstep: typing.Optional[float] = None,
+            metadata: typing.Dict[str, float] = None,
+            verbose: int = 0,
+            progress_bar: bool = True
+    ) -> None:
+        if metadata is None:
+            metadata = {}
+        self.cached_input = ds
+        self.set_value(inital_guess)
+        self._cache_params()
+        self.set_verbose(verbose)
+        ydata = ds[y]
+        dims, idxs = self._get_dims_and_idxs(y, x)
+        # drop x and all dims that are not a dim of y
+        ds = ds.drop_dims(set(ds.dims.keys()) - set(dims))
+        idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
+        dss = []
+        for idx in idxs_tqdm:
+            sel_ydata = ydata.isel(dict(zip(dims, idx)))
+            coords = {d: sel_ydata[d] for d in dims}
+            self.prepare()
+            out_ds: xr.Dataset = self._fit_a_dataarray(sel_ydata, sel_ydata[x], xmin, xmax, xstep, metadata)
+            out_ds: xr.Dataset = out_ds.assign_coords(coords).expand_dims(dims)
+            dss.append(out_ds)
+        out_ds = xr.merge(dss)
+        self.cached_output = xr.merge([ds, out_ds])
+        return
 
 
 class MultiPhaseModel(ModelBase):

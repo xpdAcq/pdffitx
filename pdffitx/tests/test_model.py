@@ -164,3 +164,20 @@ def test_fit_many_data():
     res, fits = model.fit_many_data(ds, "xdata", "ydata")
     print(res)
     print(fits)
+
+
+def test_fit_a_dataset():
+    """Test the eval method"""
+    model = mod.MultiPhaseModel("a * x")
+    model.set_value(a=1)
+    model.set_order("a")
+    x = np.linspace(0., 1., 5)
+    ds = xr.Dataset(
+        {
+            "ydata": (["cdata", "xdata"], np.stack([2. * x, 3. * x])),
+            "zdata": (["cdata"], np.zeros((2,)))
+        },
+        {"xdata": x, "cdata": [0, 1]}
+    )
+    model.fit_a_dataset(ds, "xdata", "ydata")
+    print(model.cached_output)
