@@ -155,7 +155,10 @@ def test_fit_many_data():
     model.set_order("a")
     x = np.linspace(0., 1., 5)
     ds = xr.Dataset(
-        {"ydata": (["cdata", "xdata"], np.stack([2. * x, 3. * x]))},
+        {
+            "ydata": (["cdata", "xdata"], np.stack([2. * x, 3. * x])),
+            "zdata": (["cdata"], np.zeros((2,)))
+        },
         {"xdata": x, "cdata": [0, 1]}
     )
     res, fits = model.fit_many_data(ds, "xdata", "ydata")
