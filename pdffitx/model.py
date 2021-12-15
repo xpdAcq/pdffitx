@@ -115,11 +115,10 @@ def plot_fits(fits: xr.Dataset, offset: float = 0., ax: plt.Axes = None, **kwarg
     """Plot the fitted curves."""
     if ax is None:
         ax = plt.gca()
-    kwargs.setdefault("xlim", [0, fits["x"][-1].item()])
     kwargs.setdefault("marker", "o")
     kwargs.setdefault("fillstyle", "none")
     kwargs.setdefault("ls", "none")
-    fits["yobs"].plot.line(ax=ax, **kwargs)
+    fits["y"].plot.line(ax=ax, **kwargs)
     ax.plot(fits["x"], fits["ycalc"])
     diff = fits["y"] - fits["ycalc"]
     shift = offset + fits["y"].min() - diff.max()
