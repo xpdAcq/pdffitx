@@ -849,9 +849,10 @@ class ModelBase:
     ) -> None:
         if metadata is None:
             metadata = {}
+        if inital_guess is None:
+            inital_guess = {}
         self.cached_input = ds
         self.set_value(inital_guess)
-        self._check_nan()
         self._cache_params()
         self.set_verbose(verbose)
         ydata = ds[y]
