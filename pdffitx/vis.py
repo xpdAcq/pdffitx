@@ -188,7 +188,7 @@ def _get_label(da: xr.DataArray):
 
 def gridplot_vars(
         ds: xr.Dataset,
-        plot_func: typing.Callable[[xr.Dataset, plt.Axes, typing.Any], typing.Any],
+        plot_func: typing.Callable,
         *,
         facet_kws: dict = None,
         plot_kws: dict = None,
@@ -225,7 +225,7 @@ def gridplot_vars(
     # get the axes
     axes: typing.Sequence[plt.Axes] = fg.axes.flatten()
     for i in range(n):
-        plot_func(ds[names[i]], axes[i], **plot_kws)
+        plot_func(ds[names[i]], ax=axes[i], **plot_kws)
     m = len(axes)
     for i in range(n, m):
         axes[i].axis("off")
