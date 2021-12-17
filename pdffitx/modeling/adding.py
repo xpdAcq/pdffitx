@@ -236,7 +236,7 @@ def add_adp(
         for element in elements:
             dct[element] = recipe.newVar(
                 "{}_{}_Biso".format(gen.name, bleach(element)),
-                value=0.05,
+                value=0.5,
                 tags=["adp", gen.name, "{}_adp".format(gen.name)]
             )
         for atom in atoms:
