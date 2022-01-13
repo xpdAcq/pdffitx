@@ -86,7 +86,7 @@ def plot_waterfall(
     if lab:
         line_kws["add_legend"] = False
     # get the offsets for the lines
-    offset = xr.DataArray(offset, dims=[ds[y].dims[0]]) if offset else get_offset(ds[y], delta)
+    offset = xr.DataArray(offset, dims=[ds[y].dims[0]]) if offset is not None else get_offset(ds[y], delta)
     # shift the lines
     ydata = ds[y] + offset
     ydata.attrs = ds[y].attrs
