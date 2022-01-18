@@ -168,7 +168,7 @@ class PeakMatcher:
             ls.append(l)
             rs.append(r)
         peaks["left_dist_id"] = (["peak_id"], ls)
-        peaks["right_dist_id"] = (["peak_id"], ls)
+        peaks["right_dist_id"] = (["peak_id"], rs)
         attrs = {"source": "matching"}
         peaks["left_dist_id"].attrs = attrs
         peaks["right_dist_id"].attrs = attrs
