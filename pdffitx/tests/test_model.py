@@ -104,11 +104,11 @@ def test_MultiPhaseModel_1(tmpdir):
 
 
 def test_MultiPhaseModel_2(tmpdir):
-    model = mod.MultiPhaseModel(equation="2 * r + a")
-    assert model.get_equation() == "((2 * r) + a)"
+    model = mod.MultiPhaseModel(equation="2 * x + a")
+    assert model.get_equation() == "((2 * x) + a)"
     assert model.get_param("a")
     with pytest.raises(KeyError):
-        model.get_param("r")
+        model.get_param("x")
     with pytest.raises(KeyError):
         model.set_value(b=1)
 
