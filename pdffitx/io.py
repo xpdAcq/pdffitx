@@ -1,5 +1,6 @@
 """The input / output functions related to file system."""
 import fabio
+from functools import wraps
 import numpy as np
 from diffpy.srfit.fitbase import Profile
 from diffpy.structure import loadStructure
@@ -9,8 +10,15 @@ from pyobjcryst import loadCrystal
 from pdffitx import modeling as md
 from pdffitx.modeling.fitobjs import MyParser
 
-load_crystal = loadCrystal
-load_structure = loadStructure
+
+@wraps(loadCrystal)
+def load_crystal(*args, **kwargs):
+    return loadCrystal(*args, **kwargs)
+
+
+@wraps(loadStructure)
+def load_structure(*args, **kwargs):
+    return loadStructure(*args, **kwargs)
 
 
 def load_parser(filename: str, meta: dict) -> MyParser:
