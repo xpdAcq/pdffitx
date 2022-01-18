@@ -47,9 +47,9 @@ class PeakMatcher:
         -------
 
         """
-        dists = self._find_dists(data, crystal)
-        peaks = self._find_peaks(data)
-        self._macth_dists(peaks, dists)
+        dists = self.find_dists(data, crystal)
+        peaks = self.find_peaks(data)
+        self.macth_dists(peaks, dists)
         return xr.merge([dists, peaks])
 
     @staticmethod
@@ -73,7 +73,7 @@ class PeakMatcher:
             raise PeakMactherError("The number of the dimension of `G` ndim != 1. ndim = {}".format(n_dim))
         return
 
-    def _find_dists(self, data: xr.Dataset, crystal: Crystal) -> xr.Dataset:
+    def find_dists(self, data: xr.Dataset, crystal: Crystal) -> xr.Dataset:
         """Set the rmin and rmax.
 
         Parameters
@@ -103,7 +103,7 @@ class PeakMatcher:
             }
         )
 
-    def _find_peaks(self, data: xr.Dataset) -> xr.Dataset:
+    def find_peaks(self, data: xr.Dataset) -> xr.Dataset:
         """Fit find the peaks in the data.
 
         Parameters
@@ -142,7 +142,7 @@ class PeakMatcher:
         )
 
     @staticmethod
-    def _macth_dists(peaks: xr.Dataset, dists: xr.Dataset) -> None:
+    def macth_dists(peaks: xr.Dataset, dists: xr.Dataset) -> None:
         """Match the bond distances in the range of the peaks. Modify the first dataset inplace.
 
         Parameters
