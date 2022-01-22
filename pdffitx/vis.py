@@ -363,7 +363,7 @@ def gridplot_dims(
         )
     )
     # get the dims and shape
-    dims = [col] if col else [row, col]
+    dims = [col] if row is None else [row, col]
     shape = [ds.dims[d] for d in dims]
     # add default setting
     fg = FacetGrid(
