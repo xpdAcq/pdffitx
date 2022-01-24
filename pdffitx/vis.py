@@ -364,7 +364,7 @@ def gridplot_dims(
     )
     # get the dims and shape
     dims = [col] if row is None else [row, col]
-    shape = [ds.dims[d] for d in dims]
+    shape = [ds.sizes[d] for d in dims]
     # add default setting
     fg = FacetGrid(
         xr.DataArray(
@@ -373,6 +373,7 @@ def gridplot_dims(
             dims=dims
         ),
         col=col,
+        row=row,
         **facet_kws
     )
     # get dimensions and idxs
@@ -381,6 +382,7 @@ def gridplot_dims(
     for i, idxs in enumerate(idxss):
         sel_ds = ds.isel(dict(zip(dims, idxs)))
         plot_func(sel_ds, axes[i], **plot_kws)
+        axes[i].set_title("")
     # title
     fg.set_titles(title)
     # tight layout
