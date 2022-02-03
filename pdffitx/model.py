@@ -861,15 +861,21 @@ class ModelBase:
         # drop x and all dims that are not a dim of y
         ds = ds.drop_dims(set(ds.dims.keys()) - set(dims))
         idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
-        dss = []
-        for idx in idxs_tqdm:
-            sel_ydata = ydata.isel(dict(zip(dims, idx)))
-            coords = {d: sel_ydata[d] for d in dims}
-            out_ds: xr.Dataset = self._fit_a_dataarray(sel_ydata, sel_ydata[x], xmin, xmax, xstep, metadata)
-            out_ds: xr.Dataset = out_ds.assign_coords(coords).expand_dims(dims)
-            dss.append(out_ds)
-        out_ds = xr.merge(dss)
-        self.cached_output = xr.merge([ds, out_ds])
+
+        def gen():
+            for idx in idxs_tqdm:
+                sel_ydata = ydata.isel(dict(zip(dims, idx)))
+                not_nan = np.logical_not(np.isnan(sel_ydata))
+                if np.sum(not_nan) == 0:
+                    continue
+                sel_ydata = sel_ydata[not_nan]
+                coords = {d: sel_ydata[d] for d in dims}
+                out_ds: xr.Dataset = self._fit_a_dataarray(sel_ydata, sel_ydata[x], xmin, xmax, xstep, metadata)
+                out_ds: xr.Dataset = out_ds.assign_coords(coords).expand_dims(dims)
+                yield out_ds
+
+        final_ds = xr.merge(gen())
+        self.cached_output = xr.merge([ds, final_ds])
         return
 
 
