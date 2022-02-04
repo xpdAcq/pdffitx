@@ -315,6 +315,9 @@ def plot_fit(
     yobs = fit["yobs"]
     y = fit["y"]
     ycalc = fit["ycalc"]
+    # not plot the nan
+    if np.sum(~np.isnan(yobs)) == 0:
+        return
     if xmin is not None:
         yobs = yobs.where(yobs["xobs"] >= xmin, drop=True)
         y = y.where(y["x"] >= xmin, drop=True)
