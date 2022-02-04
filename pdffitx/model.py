@@ -852,17 +852,16 @@ class ModelBase:
             metadata = {}
         if inital_guess is None:
             inital_guess = {}
-        self.cached_input = ds
         self.set_value(inital_guess)
+        self.cached_input = ds
         self._cache_params()
         self.set_verbose(verbose)
-        ydata = ds[y]
         dims, idxs = self._get_dims_and_idxs(y, x)
-        # drop x and all dims that are not a dim of y
-        ds = ds.drop_dims(set(ds.dims.keys()) - set(dims))
+        # drop x and all dims that are not a dimension of y
         idxs_tqdm = tqdm.tqdm(idxs, disable=(not progress_bar))
 
         def gen():
+            ydata = ds[y]
             for idx in idxs_tqdm:
                 sel_ydata = ydata.isel(dict(zip(dims, idx)))
                 not_nan = np.logical_not(np.isnan(sel_ydata))
@@ -874,8 +873,7 @@ class ModelBase:
                 out_ds: xr.Dataset = out_ds.assign_coords(coords).expand_dims(dims)
                 yield out_ds
 
-        final_ds = xr.merge(gen())
-        self.cached_output = xr.merge([ds, final_ds])
+        self.cached_output = xr.merge(gen())
         return
 
 
