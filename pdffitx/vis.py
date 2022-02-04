@@ -411,5 +411,6 @@ def fitplot_dims(
         axes: typing.Iterable[plt.Axes] = fg.axes.flatten()
         rws: typing.Iterable[float] = ds["rw"].values.flatten()
         for ax, rw in zip(axes, rws):
-            ax.annotate(label.format(rw), label_xy, xycoords='axes fraction')
+            if rw:
+                ax.annotate(label.format(rw), label_xy, xycoords='axes fraction')
     return fg
