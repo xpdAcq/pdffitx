@@ -137,6 +137,6 @@ def to_lines(df: pd.DataFrame, head: str, escape=False) -> tp.List[str]:
     """
     origin_str = df.to_latex(escape=escape)
     lines = origin_str.split('\n')
-    row = r"\multicolumn{" + str(df.shape[1]) + r"}{l}{" + head + r"}"
+    row = r"\multicolumn{" + str(df.shape[1] + 1) + r"}{l}{" + head + r"}\\"
     lines = lines[:4] + [row, r"\midrule"] + lines[4:]
     return lines
